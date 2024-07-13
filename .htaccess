@@ -1,5 +1,6 @@
 RewriteEngine On
-RewriteBase /
+RewriteBase /php/Du-an-mau/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^([a-zA-Z0-9-/]+)$ index.php?url=$1 [L,QSA]
+
