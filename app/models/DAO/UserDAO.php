@@ -17,11 +17,11 @@ class UserDAO {
         return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
     }
 
-    public function addUser($username, $email, $phone, $hashedPassword) {
+    public function addUser($username, $email, $phone, $hashedPassword, $imagePath) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("INSERT INTO " . $this->table . " (username, email, phone, password) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$username, $email, $phone, $hashedPassword]);
+        $stmt = $db->prepare("INSERT INTO " . $this->table . " (username, email, phone, password, img) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$username, $email, $phone, $hashedPassword, $imagePath]);
     }
 }
 ?>
