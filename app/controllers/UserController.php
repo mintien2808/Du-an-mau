@@ -15,17 +15,18 @@ class UserController extends HomeController {
             $username = $_POST['username'] ?? null;
             $password = $_POST['password'] ?? null;
             $user = $this->userDao->getUser($username, $password);
-            if ($user) {
+            if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user;
-                $this->view->redirect('/index');
+                $this->view->redirect('../home');
             } else {
-                $this->view->render('user/login', ['error' => 'Invalid credentials']);
+                $this->view->render('user/login', ['error' => 'Sai thông tin đăng nhập']);
             }
         } else {
             $this->view->render('user/login');
         }
     }
-
+    
+    
     public function register() {
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -61,7 +62,8 @@ class UserController extends HomeController {
             }
 
             $target_file = "public/img/default.png";
-            if (!empty($image['name'])) {
+            $role = 'user';
+                if (!empty($image['name'])) {
                 $target_dir = "public/img/";
                 $target_file = $target_dir . basename($image["name"]);
                 $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -77,12 +79,11 @@ class UserController extends HomeController {
                 }
             }
             if (empty($errors)) {
-                
-                if ($this->userDao->checkUserExists($username, $email)) {
+                if ($this->userDao->getUser($username)) {
                     $errors['exists'] = "Username hoặc Email đã tồn tại!";
                 } else {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    $this->userDao->addUser($username, $email, $phone, $hashedPassword, $target_file);
+                    $this->userDao->addUser($username, $email, $phone, $hashedPassword, $target_file,$role);
                     $this->view->redirect('login');
                 }
             }

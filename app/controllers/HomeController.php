@@ -2,7 +2,7 @@
 require_once 'core/View.php';
 class HomeController {
     protected $view;
-
+    
     public function __construct() {
         $this->view = new View();
     }

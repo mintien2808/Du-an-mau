@@ -1,44 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/style.css">
 </head>
-<body>
-    <form action="register" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" name="username" value="<?= $_POST['username'] ?? '' ?>">
-            <?= $errors['username'] ?? '' ?>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" name="email" value="<?= $_POST['email'] ?? '' ?>">
-            <?= $errors['email'] ?? '' ?>
-        </div>
-        <div>
-            <label for="phone">Phone:</label>
-            <input type="text" name="phone" value="<?= $_POST['phone'] ?? '' ?>">
-            <?= $errors['phone'] ?? '' ?>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" name="password">
-            <?= $errors['password'] ?? '' ?>
-        </div>
-        <div>
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password">
-            <?= $errors['confirm_password'] ?? '' ?>
-        </div>
-        <div>
-            <label for="image">Profile Image:</label>
-            <input type="file" name="image">
-            <?= $errors['image'] ?? '' ?>
-        </div>
-        <?php if (isset($errors['exists'])) { echo "<p style='color:red;'>{$errors['exists']}</p>"; } ?>
-        <button type="submit">Register</button>
-    </form>
+<body> 
+<div class="alert text-center title-login">
+    <strong>Trang Đăng Ký</strong>
+</div>
+<div class="sign-up col-md-12 col-md-offset-2 mt-10">
+  <form class="sign-up__form" action="register" method="post" enctype="multipart/form-data"> 
+    <div class="sign-up__content">
+      <h2 class="sign-up__title">Đăng Ký</h2>
+      <input class="sign-up__inp" type="text" placeholder="Tài Khoản" name="username" >
+      <input class="sign-up__inp" type="email" placeholder="Email" name="email" >
+      <input class="sign-up__inp" type="phone" placeholder="Số điện thoại" name="phone" >
+      <input class="sign-up__inp" type="password" placeholder="Password" name="password" >
+      <input class="sign-up__inp" type="password" placeholder="PasswordConfirm" name="confirm_password" >
+      <input class="sign-up__inp" type="file"  name="image" >
+      
+      <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
+      <a class="forgot__password" href="fgpw">Forgot password</a>
+    </div>
+    <div class="sign-up__buttons"><a class="btn btn--register" href="login">Đã có tài khoản?</a>
+      <button class="btn btn--signin" type="submit">Đăng Ký</button>
+    </div>
+  </form>
+</div>
+<div class="col-md-10 col-md-offset-2 ">
+<div class="circle circle--red"></div>
+  <div class="circle circle--yellow"></div>
+  <div class="circle circle--green"></div>
+  <div class="circle circle--purple"></div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
