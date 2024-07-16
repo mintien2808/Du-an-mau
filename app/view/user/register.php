@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +21,6 @@
       <input class="sign-up__inp" type="password" placeholder="Password" name="password" >
       <input class="sign-up__inp" type="password" placeholder="PasswordConfirm" name="confirm_password" >
       <input class="sign-up__inp" type="file"  name="image" >
-      
       <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
       <a class="forgot__password" href="fgpw">Forgot password</a>
     </div>

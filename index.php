@@ -9,6 +9,7 @@ spl_autoload_register(function ($class_name) {
         require_once 'app/models/DAO/' . $class_name . '.php';
     }
 });
+
 $url = $_GET['url'] ?? 'home';
 $url = explode('/', filter_var(rtrim($url, '/'), FILTER_SANITIZE_URL));
 $controllerName = ucfirst(strtolower($url[0])) . 'Controller';

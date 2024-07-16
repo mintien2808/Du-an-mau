@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../../config/database.php';
 class ProductDAO {
     private $table = "product";
+    private $categoryTable = "categories";
+    
     public function getAllProducts() {
         $database = new Database();
         $db = $database->getConnection();
@@ -37,6 +39,22 @@ class ProductDAO {
         $db = $database->getConnection();
         $stmt = $db->prepare("DELETE FROM " . $this->table . " WHERE id = ?");
         return $stmt->execute([$id]);
+    }
+
+    public function getProductsByCategory($category_id) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("SELECT * FROM " . $this->table . " WHERE category_id = ?");
+        $stmt->execute([$category_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllCategories() {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("SELECT * FROM " .$this->categoryTable);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
