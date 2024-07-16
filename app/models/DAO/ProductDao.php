@@ -7,7 +7,7 @@ class ProductDAO {
     public function getAllProducts() {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("SELECT * FROM " . $this->table);
+        $stmt = $db->prepare("SELECT * FROM " . $this->table );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -23,14 +23,14 @@ class ProductDAO {
     public function addProduct($name, $description, $price, $image,$quantity) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, description, price, image,quantity) VALUES (?, ?, ?, ?,?)");
+        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, description, price, img,quantity) VALUES (?, ?, ?, ?,?)");
         return $stmt->execute([$name, $description, $price, $image,$quantity]);
     }
 
     public function updateProduct($id, $name, $description, $price, $image,$quantity) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, description = ?, price = ?, image = ?, quantity = ?  WHERE id = ? ");
+        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, description = ?, price = ?, img = ?, quantity = ?  WHERE id = ? ");
         return $stmt->execute([$name, $description, $price, $image, $id,$quantity]);
     }
 
@@ -44,7 +44,7 @@ class ProductDAO {
     public function getProductsByCategory($category_id) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("SELECT * FROM " . $this->table . " WHERE category_id = ?");
+        $stmt = $db->prepare("SELECT * FROM " . $this->table . " WHERE id_category = ?");
         $stmt->execute([$category_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -56,5 +56,6 @@ class ProductDAO {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>

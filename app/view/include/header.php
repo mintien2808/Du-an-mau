@@ -11,11 +11,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="text-center text-danger text-uppercase bg-dark p-3 ">
-            ------------------------------------------------------------
-            MIỄN PHÍ ĐỔI HÀNG TRONG 30
-            NGÀY--------------------------------------------------------
-        </div>
         <header>
             <nav>
                 <ul class="keoDeAn">
@@ -34,7 +29,3 @@
                 </ul>
             </nav>
         </header>
-
-        <section class="anh">
-            <video width="1300" src="video/video.mp4" autoplay muted></video>
-        </section>

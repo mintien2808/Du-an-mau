@@ -21,13 +21,25 @@ class ProductController extends HomeController {
         $categories = $this->productDAO->getAllCategories();
         $this->view->render('home', ['products' => $products, 'categories' => $categories]);
     }
-    public function getAllCategories() {
-        $database = new Database();
-        $db = $database->getConnection();
-        $stmt = $db->prepare("SELECT * FROM " . $this->categoryTable);
-        $stmt->execute();
-        $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    public function detail($id) {
+        $product = $this->productDAO->getProductById($id);
+        $this->view->render('products/detail', ['product' => $product]);
+    }
+
+    public function addToCart($id) {
+        $product = $this->productDAO->getProductById($id);
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+        $cartItem = [
+            'id' => $product['id'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'quantity' => 1
+        ];
+        $_SESSION['cart'][] = $cartItem;
+        header('Location: index.php?url=cart');
     }
     
 }

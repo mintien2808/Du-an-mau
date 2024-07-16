@@ -1,6 +1,5 @@
 <?php
 require_once 'core/View.php';
-require_once 'app/models/DAO/UserDAO.php';
 class HomeController {
     protected $view;
     private $productDAO;
@@ -11,14 +10,16 @@ class HomeController {
     }
 
     public function loadModel($model) {
-        require_once 'models/DAO/' . $model . '.php';
+        require_once 'app/models/DAO/' . $model . '.php';
         return new $model();
     }
+
     public function index() {
         $products = $this->productDAO->getAllProducts();
         $categories = $this->productDAO->getAllCategories();
         $this->view->render('home', ['products' => $products, 'categories' => $categories]);
     }
+
     
 }
 ?>
