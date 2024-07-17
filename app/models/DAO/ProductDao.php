@@ -28,13 +28,13 @@ class ProductDAO {
         return $stmt->execute([$name, $description, $price, $image,$quantity,$id_cate]);
     }
 
-    public function updateProduct($id, $name, $description, $price, $image,$quantity,$id_cate) {
+    public function updateProduct($id, $name, $price, $quantity, $description, $image, $id_cate) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, description = ?, price = ?, img = ?, quantity = ? ,id_category=? WHERE id = ? ");
-        return $stmt->execute([$name, $description, $price, $image,$quantity,$id_cate, $id]);
+        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, price = ?, quantity = ?, description = ?, img = ?, id_category = ? WHERE id = ?");
+        return $stmt->execute([$name, $price, $quantity, $description, $image, $id_cate, $id]);
     }
-
+    
     public function deleteProduct($id) {
         $database = new Database();
         $db = $database->getConnection();

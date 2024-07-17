@@ -268,9 +268,8 @@ class AdminController extends HomeController {
                     $errors['image'] = "Sorry, there was an error uploading your file.";
                 }
             }
-    
             if (empty($errors)) {
-                $this->productDao->updateProduct($id, $name, $price, $description, $quantity, $target_file, $id_cate);
+                $this->productDao->updateProduct($id, $name, $price, $quantity, $description, $target_file, $id_cate);
                 header('Location: index.php?url=admin/index');
                 exit;
             }
