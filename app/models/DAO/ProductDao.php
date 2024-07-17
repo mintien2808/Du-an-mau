@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../../config/database.php';
 class ProductDAO {
     private $table = "product";
     private $categoryTable = "categories";
+    private $cartTable = 'cart';
     
     public function getAllProducts() {
         $database = new Database();
@@ -20,18 +21,18 @@ class ProductDAO {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addProduct($name, $description, $price, $image,$quantity) {
+    public function addProduct($name, $description, $price, $image,$quantity,$id_cate) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, description, price, img,quantity) VALUES (?, ?, ?, ?,?)");
-        return $stmt->execute([$name, $description, $price, $image,$quantity]);
+        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, description, price, img,quantity,id_category) VALUES (?, ?, ?, ?,?,?)");
+        return $stmt->execute([$name, $description, $price, $image,$quantity,$id_cate]);
     }
 
-    public function updateProduct($id, $name, $description, $price, $image,$quantity) {
+    public function updateProduct($id, $name, $description, $price, $image,$quantity,$id_cate) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, description = ?, price = ?, img = ?, quantity = ?  WHERE id = ? ");
-        return $stmt->execute([$name, $description, $price, $image, $id,$quantity]);
+        $stmt = $db->prepare("UPDATE " . $this->table . " SET name = ?, description = ?, price = ?, img = ?, quantity = ? ,id_category=? WHERE id = ? ");
+        return $stmt->execute([$name, $description, $price, $image,$quantity,$id_cate, $id]);
     }
 
     public function deleteProduct($id) {
@@ -57,5 +58,13 @@ class ProductDAO {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    public function addtoCart ($user_id,$product_id, $price_product, $total_price,$img,$quantity) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $user_id = $_SESSION['user']['id'];
+        $stmt = $db->prepare("INSERT INTO " . $this->cartTable . " (user_id,product_id,price_product,quantity,total_price,img) VALUES ( ?, ?, ?,?,?,?)");
+        return $stmt -> execute($user_id,$product_id, $price_product, $total_price,$img,$quantity);
+    }
+
 }
 ?>

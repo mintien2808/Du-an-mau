@@ -9,7 +9,7 @@
     <div class="product-info">
         <p>Giá: <?php echo $product['price']; ?>đ</p>
         <p><?php echo $product['description']; ?></p>
-        <a href="index.php?url=Product/addToCart/<?php echo $product['id']; ?>"><button>Mua</button></a>
+        <a href="index.php?url=Product/addtoCart/<?php echo $product['id']; ?>"><button>Mua</button></a>
     </div>
 </div>
 <?php include_once('/xampp/htdocs/php/du-an-mau/app/view/include/footer.php'); ?>

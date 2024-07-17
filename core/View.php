@@ -6,7 +6,7 @@ class View {
     }
     
     public function redirect($url) {
-        header("Location: $url");
+        header("Location: ../index.php?url=$url");
         exit;
     }
 

@@ -25,8 +25,7 @@ class UserController extends HomeController {
             $this->view->render('user/login');
         }
     }
-    
-    
+
     public function register() {
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

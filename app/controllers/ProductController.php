@@ -27,20 +27,9 @@ class ProductController extends HomeController {
         $this->view->render('products/detail', ['product' => $product]);
     }
 
-    public function addToCart($id) {
+    public function addtoCart($id){
         $product = $this->productDAO->getProductById($id);
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-        $cartItem = [
-            'id' => $product['id'],
-            'name' => $product['name'],
-            'price' => $product['price'],
-            'quantity' => 1
-        ];
-        $_SESSION['cart'][] = $cartItem;
-        header('Location: index.php?url=cart');
+        $cart = $this->productDAO->addtoCart();
     }
-    
 }
 ?>

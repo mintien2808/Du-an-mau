@@ -18,8 +18,9 @@
                             <img src="pic/logo.webp" alt="" class="logo">
                         </a></li>
                     <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
-                    <li class="rieng"><a href="introduce">About Us</a></li> 
+                    <li class="rieng"><a href="introduce">About Us</a></li>
                     <li class="rieng"><a href="user/login">Đăng Nhập</a></li>
+                    <li class="rieng"><a href="admin">Admin</a></li>
                 </ul>
 
                 <ul class="dropdown">

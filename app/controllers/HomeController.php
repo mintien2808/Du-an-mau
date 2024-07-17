@@ -19,7 +19,6 @@ class HomeController {
         $categories = $this->productDAO->getAllCategories();
         $this->view->render('home', ['products' => $products, 'categories' => $categories]);
     }
-
     
 }
 ?>
