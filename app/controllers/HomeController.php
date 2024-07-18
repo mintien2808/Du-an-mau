@@ -1,5 +1,5 @@
 <?php
-require_once 'core/View.php';
+require_once 'core/View.php';   
 class HomeController {
     protected $view;
     private $productDAO;

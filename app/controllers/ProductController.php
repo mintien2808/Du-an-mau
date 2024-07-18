@@ -27,9 +27,5 @@ class ProductController extends HomeController {
         $this->view->render('products/detail', ['product' => $product]);
     }
 
-    public function addtoCart($id){
-        $product = $this->productDAO->getProductById($id);
-        $cart = $this->productDAO->addtoCart();
-    }
 }
 ?>

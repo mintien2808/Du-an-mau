@@ -59,4 +59,31 @@
     <a href="admin/Addproduct">Thêm người dùng mới</a>
 </div>
 
+<div class="content">
+    <h2>Danh sách sản phẩm</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ảnh đại diện</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($categories as $category): ?>
+            <tr>
+                <td><?php echo $category['id']; ?></td>
+                <td><?php echo $category['name']; ?></td>
+                <td><?php echo $category['img']; ?></td>
+                <td>
+                    <a href="index.php?url=admin/UpdateCategory/<?php echo $category['id']; ?>">Sửa</a>
+                    <a href="index.php?url=admin/DeleteCategory/<?php echo $category['id']; ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <a href="admin/AddCategory">Thêm người dùng mới</a>
+</div>
+
 <?php include_once('/xampp/htdocs/php/du-an-mau/app/view/include/footer.php'); ?>

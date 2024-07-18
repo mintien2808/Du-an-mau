@@ -16,7 +16,8 @@ class AdminController extends HomeController {
     public function index(){
         $users = $this->AdminDao->getAllUser();
         $products = $this->productDao->getAllProducts();
-        $this->view->render('admin/home', ['users' => $users,'products'=>$products]);
+        $categories = $this->productDao->getAllCategories();
+        $this->view->render('admin/home', ['users' => $users,'products'=>$products,'categories'=>$categories]);
     }
 
     public function DeleteUser($id){
@@ -276,7 +277,7 @@ class AdminController extends HomeController {
     
         $this->view->render('admin/updateProduct', ['errors' => $errors, 'product' => $product,'categories'=>$categories]);
     }
-
+    
     #CATEGORY 
     
     public function AddCategory(){
@@ -324,7 +325,7 @@ class AdminController extends HomeController {
 
     public function UpdateCategory($id){
         $errors = [];
-        
+        $categories = $this->productDao->getCategory($id);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? null;
             $image = $_FILES['image'] ?? null;
@@ -336,8 +337,8 @@ class AdminController extends HomeController {
             if (empty($image)) {
                 $errors['image'] = "image không được để trống!";
             }
-    
-            $target_file = $product['img']; 
+            
+            $target_file = $categories['img']; 
             if (!empty($image['name'])) {
                 $target_dir = "public/img/";
                 $target_file = $target_dir . basename($image["name"]);
@@ -354,13 +355,13 @@ class AdminController extends HomeController {
                 }
             }
             if (empty($errors)) {
-                $this->productDao->updateProduct($id, $name, $price, $quantity, $description, $target_file, $id_cate);
+                $this->productDao->UpdateCategory($id,$name,$target_file);
                 header('Location: index.php?url=admin/index');
                 exit;
             }
         }
     
-        $this->view->render('admin/updateProduct', ['errors' => $errors, 'product' => $product,'categories'=>$categories]);
+        $this->view->render('admin/UpdateCategory', ['errors' => $errors,'categories'=>$categories]);
     }
 
 }

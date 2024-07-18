@@ -1,4 +1,14 @@
-<?php include_once('include/header.php'); ?>
+<?php
+include_once('/xampp/htdocs/php/du-an-mau/app/view/include/header.php');
+
+// Tính tổng số tiền
+$totalAmount = 0;
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        $totalAmount += $item['product_price'] * $item['quantity'];
+    }
+}
+?>
 
 <div class="content">
     <h2>Giỏ Hàng Của Bạn</h2>
@@ -15,12 +25,12 @@
                 </tr>
                 <?php foreach ($_SESSION['cart'] as $item): ?>
                     <tr>
-                        <td><img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="cart-item-image"></td>
-                        <td><?php echo $item['name']; ?></td>
-                        <td><?php echo number_format($item['price']); ?>đ</td>
+                        <td><img src="<?php echo $item['product_img']; ?>" alt="<?php echo $item['product_name']; ?>" class="cart-item-image"></td>
+                        <td><?php echo $item['product_name']; ?></td>
+                        <td><?php echo number_format($item['product_price']); ?>đ</td>
                         <td><?php echo $item['quantity']; ?></td>
-                        <td><?php echo number_format($item['price'] * $item['quantity']); ?>đ</td>
-                        <td><a href="index.php?url=Product/removeFromCart/<?php echo $item['id']; ?>">Xóa</a></td>
+                        <td><?php echo number_format($item['product_price'] * $item['quantity']); ?>đ</td>
+                        <td><a href="index.php?url=Product/removeFromCart/<?php echo $item['cart_id']; ?>">Xóa</a></td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
@@ -36,4 +46,4 @@
     </div>
 </div>
 
-<?php include_once('include/footer.php'); ?>
+<?php include_once('/xampp/htdocs/php/du-an-mau/app/view/include/footer.php'); ?>

@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../../config/database.php';
 class ProductDAO {
     private $table = "product";
     private $categoryTable = "categories";
-    private $cartTable = 'cart';
     
     public function getAllProducts() {
         $database = new Database();
@@ -74,21 +73,25 @@ class ProductDAO {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAllCategories() {
-        $stmt = $this->db->prepare("SELECT * FROM " . $this->table);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function addCategory($name, $img) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("INSERT INTO categories (name, img) VALUES (?, ?)");
+        return $stmt->execute([$name, $img]);
     }
 
-    public function addCategory($name, $description) {
-        $stmt = $this->db->prepare("INSERT INTO " . $this->table . " (name, description) VALUES (?, ?)");
-        return $stmt->execute([$name, $description]);
+    public function updateCategory($id, $name,$img) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("UPDATE categories SET name = ?, img = ? WHERE id = ?");
+        return $stmt->execute([$name, $img, $id]);
     }
 
-    public function updateCategory($id, $name, $description) {
-        $stmt = $this->db->prepare("UPDATE " . $this->table . " SET name = ?, description = ? WHERE id = ?");
-        return $stmt->execute([$name, $description, $id]);
+    public function DeleteCategory($id) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("DELETE FROM categories WHERE id = ?");
+        return $stmt->execute([$id]);
     }
-
 }
 ?>

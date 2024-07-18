@@ -1,13 +1,16 @@
 <?php
 require_once 'HomeController.php';
 require_once 'app/models/DAO/UserDAO.php';
+require_once 'app/models/DAO/CartDao.php';
 
 class UserController extends HomeController {
     private $userDao;
+    private $CartDao;
 
     public function __construct() {
         parent::__construct();
         $this->userDao = new UserDAO();
+        $this->cartDao = new CartDAO();
     }
 
     public function login() {
@@ -17,7 +20,8 @@ class UserController extends HomeController {
             $user = $this->userDao->getUser($username, $password);
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user;
-                $this->view->redirect('../home');
+                $_SESSION['cart'] = $this->cartDao->getCartById($user['id']);
+                $this->view->redirect('home');
             } else {
                 $this->view->render('user/login', ['error' => 'Sai thông tin đăng nhập']);
             }
@@ -89,14 +93,18 @@ class UserController extends HomeController {
         }
         $this->view->render('user/register', ['errors' => $errors]);
     }
+
     public function profile() {
         $this->view->render('user/profile', ['user' => $_SESSION['user']]);
     }
 
     public function logout() {
+        $this->cartDao->saveCartToDatabase($_SESSION['user']['id'], $_SESSION['cart']); 
         unset($_SESSION['user']);
+        unset($_SESSION['cart']);
         session_destroy();
         $this->view->redirect('home');
     }
+    
 }
 ?>
