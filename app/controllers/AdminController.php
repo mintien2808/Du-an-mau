@@ -12,7 +12,6 @@ class AdminController extends HomeController {
         $this->UserDao = new UserDAO();
     }
 
-
     #USER
     public function index(){
         $users = $this->AdminDao->getAllUser();
@@ -277,6 +276,93 @@ class AdminController extends HomeController {
     
         $this->view->render('admin/updateProduct', ['errors' => $errors, 'product' => $product,'categories'=>$categories]);
     }
+
+    #CATEGORY 
+    
+    public function AddCategory(){
+        $errors = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? null;
+            $image = $_FILES['image'] ?? null;
+
+            if (empty($name)) {
+                $errors['name'] = "Tên Danh mục không được để trống!";
+            }
+
+            if (empty($image)) {
+                $errors['image'] = " Ảnh Danh mục không được để trống!";
+            }
+
+            if (!empty($image['name'])) {
+                $target_dir = "public/img/";
+                $target_file = $target_dir . basename($image["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $check = getimagesize($image["tmp_name"]);
+                if ($check === false) {
+                    $errors['image'] = "File is not an image.";
+                } elseif ($image["size"] > 5000000) { 
+                    $errors['image'] = "Sorry, your file is too large.";
+                } elseif (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+                    $errors['image'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                } elseif (!move_uploaded_file($image["tmp_name"], $target_file)) {
+                    $errors['image'] = "Sorry, there was an error uploading your file.";
+                }
+            }
+
+            if (empty($errors)) {
+                $this->productDao->AddCategory($name, $target_file);
+                $this->view->redirect('admin/index');
+            }
+        }
+        $this->view->render('admin/AddCategory', ['errors' => $errors]);
+    }
+
+    public function DeleteCategory($id){
+        $deleteUser = $this->productDao->DeleteCategory($id);
+        header('Location: index.php?url=admin/index');
+    }
+
+    public function UpdateCategory($id){
+        $errors = [];
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? null;
+            $image = $_FILES['image'] ?? null;
+    
+            if (empty($name)) {
+                $errors['name'] = "name không được để trống!";
+            }
+    
+            if (empty($image)) {
+                $errors['image'] = "image không được để trống!";
+            }
+    
+            $target_file = $product['img']; 
+            if (!empty($image['name'])) {
+                $target_dir = "public/img/";
+                $target_file = $target_dir . basename($image["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $check = getimagesize($image["tmp_name"]);
+                if ($check === false) {
+                    $errors['image'] = "File is not an image.";
+                } elseif ($image["size"] > 5000000) { 
+                    $errors['image'] = "Sorry, your file is too large.";
+                } elseif (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+                    $errors['image'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                } elseif (!move_uploaded_file($image["tmp_name"], $target_file)) {
+                    $errors['image'] = "Sorry, there was an error uploading your file.";
+                }
+            }
+            if (empty($errors)) {
+                $this->productDao->updateProduct($id, $name, $price, $quantity, $description, $target_file, $id_cate);
+                header('Location: index.php?url=admin/index');
+                exit;
+            }
+        }
+    
+        $this->view->render('admin/updateProduct', ['errors' => $errors, 'product' => $product,'categories'=>$categories]);
+    }
+
 }
 
 
