@@ -5,19 +5,19 @@ require_once('app/models/DAO/UserDAO.php');
 class AdminController extends HomeController {
     private $AdminDao;
     private $productDao;
+    private $categories;
     public function __construct() {
         parent::__construct();
         $this->AdminDao = new AdminDAO();
         $this->productDao = new productDAO();
         $this->UserDao = new UserDAO();
     }
-
-
     #USER
     public function index(){
         $users = $this->AdminDao->getAllUser();
         $products = $this->productDao->getAllProducts();
-        $this->view->render('admin/home', ['users' => $users,'products'=>$products]);
+        $categories = $this->productDao->getAllCategories();
+        $this->view->render('admin/home', ['users' => $users,'products'=>$products,'categories' => $categories]);
     }
 
     public function DeleteUser($id){
@@ -155,7 +155,6 @@ class AdminController extends HomeController {
         $this->view->render('admin/fix-info', ['errors' => $errors, 'user' => $user]);
     }
 
-
     #PRODUCT 
     public function AddProduct(){
         $errors = [];
@@ -274,9 +273,92 @@ class AdminController extends HomeController {
                 exit;
             }
         }
-    
         $this->view->render('admin/updateProduct', ['errors' => $errors, 'product' => $product,'categories'=>$categories]);
     }
+
+    #CATEGORY 
+
+    public function AddCategory(){
+        $errors = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? null;
+            $image = $_FILES['image'] ?? null;
+
+            if (empty($name)) {
+                $errors['name'] = "Tên danh mục không được để trống!";
+            }
+
+            if (empty($image)) {
+                $errors['image'] = "Thiếu Ảnh";
+            }
+
+            if (!empty($image['name'])) {
+                $target_dir = "public/img/";
+                $target_file = $target_dir . basename($image["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $check = getimagesize($image["tmp_name"]);
+                if ($check === false) {
+                    $errors['image'] = "File is not an image.";
+                } elseif ($image["size"] > 5000000) { 
+                    $errors['image'] = "Sorry, your file is too large.";
+                } elseif (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+                    $errors['image'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                } elseif (!move_uploaded_file($image["tmp_name"], $target_file)) {
+                    $errors['image'] = "Sorry, there was an error uploading your file.";
+                }
+            }
+
+            if (empty($errors)) {
+                $this->productDao->addCategory($name, $target_file);
+                $this->view->redirect('admin/index');
+            }
+        }
+        $this->view->render('admin/AddCategory', ['errors' => $errors]);
+    }
+
+    public function deleteCategory($id) {
+        $this->productDao->deleteCategory($id);
+        header('Location: index.php?url=admin/index');
+    }
+
+    public function UpdateCategory ($id){
+        $errors = [];
+        $categories = $this->productDao->getCategory($id);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? null;
+            $image = $_FILES['image'] ?? null;
+    
+            if (empty($name)) {
+                $errors['name'] = "Tên danh mục không được để trống!";
+            }
+
+            $target_file = $categories['img']; 
+            if (!empty($image['name'])) {
+                $target_dir = "public/img/";
+                $target_file = $target_dir . basename($image["name"]);
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $check = getimagesize($image["tmp_name"]);
+                if ($check === false) {
+                    $errors['image'] = "File is not an image.";
+                } elseif ($image["size"] > 5000000) { 
+                    $errors['image'] = "Sorry, your file is too large.";
+                } elseif (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+                    $errors['image'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                } elseif (!move_uploaded_file($image["tmp_name"], $target_file)) {
+                    $errors['image'] = "Sorry, there was an error uploading your file.";
+                }
+            }
+    
+            if (empty($errors)) {
+                $this->productDao->UpdateCategory($id, $name, $target_file);
+                header('Location: index.php?url=admin/index');
+                exit;
+            }
+        }
+    
+        $this->view->render('admin/UpdateCategory', ['errors' => $errors, 'categories' => $categories]);
+    }
+
 }
 
 

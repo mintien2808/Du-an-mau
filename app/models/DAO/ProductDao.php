@@ -66,5 +66,33 @@ class ProductDAO {
         return $stmt -> execute($user_id,$product_id, $price_product, $total_price,$img,$quantity);
     }
 
+    public function getCategory($id) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("SELECT * FROM categories WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function addCategory($name, $image) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("INSERT INTO categories (name, img) VALUES (?, ?)");
+        return $stmt->execute([$name, $image]);
+    }
+
+    public function updateCategory($id, $name, $image) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("UPDATE categories SET name = ?, img = ? WHERE id = ?");
+        return $stmt->execute([$name, $image, $id]);
+    }
+
+    public function deleteCategory($id) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("DELETE FROM categories WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }
 ?>
