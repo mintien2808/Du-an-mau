@@ -10,5 +10,10 @@ class View {
         exit;
     }
 
+    public function redirectmomo($url) {
+        header("Location: $url");
+        exit;
+    }
+    
 }
 ?>

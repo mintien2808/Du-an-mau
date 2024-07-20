@@ -26,6 +26,5 @@ class ProductController extends HomeController {
         $product = $this->productDAO->getProductById($id);
         $this->view->render('products/detail', ['product' => $product]);
     }
-
 }
 ?>

@@ -1,5 +1,4 @@
-<?php include_once('/xampp/htdocs/php/du-an-mau/app/view/include/header.php'); ?>
-
+<?php include_once('../du-an-mau/app/view/include/header.php'); ?>
 <div class="product-detail">
     <h1><?php echo $product['name']; ?></h1>
     <div class="product-image">
@@ -13,4 +12,4 @@
         <a href="index.php?url=home"><button>Quay về trang mua</button></a>
     </div>
 </div>
-<?php include_once('/xampp/htdocs/php/du-an-mau/app/view/include/footer.php'); ?>
+<?php include_once('../du-an-mau/app/view/include/footer.php'); ?>

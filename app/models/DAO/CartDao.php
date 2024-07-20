@@ -72,18 +72,6 @@ class CartDao {
             echo "HTTP Method Not Allowed.";
         }
     }
-    
-    public function updateCartDatabase($productId, $productDetails) {
-        $sql = "UPDATE cart SET quantity = ?, product_name = ?, product_price = ?, product_img = ? WHERE product_id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            $productDetails['quantity'],
-            $productDetails['product_name'],
-            $productDetails['product_price'],
-            $productDetails['product_img'],
-            $productId
-        ]);
-    }
 
     public function saveCartToDatabase($userId, $cartData) {
         $sql = "DELETE FROM cart WHERE user_id = ?";
@@ -103,7 +91,12 @@ class CartDao {
             ]);
         }
     }
-    
+
+    public function clearCart($userId) {
+        $stmt = $this->db->prepare("DELETE FROM cart WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        unset($_SESSION['cart']);
+    }
 }
     
  ?>
