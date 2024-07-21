@@ -11,7 +11,7 @@ class AdminController extends HomeController {
         $this->productDao = new productDAO();
         $this->UserDao = new UserDAO();
     }
-
+      
     #USER
     public function index(){
         $users = $this->AdminDao->getAllUser();

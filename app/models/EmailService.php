@@ -12,7 +12,7 @@ class EmailService {
             $mail->Host = 'smtp.gmail.com'; 
             $mail->SMTPAuth = true;
             $mail->Username = 'min.tien.2803@gmail.com'; 
-            $mail->Password = 'wuzm deqt uqqe oecd'; // Mật khẩu email của bạn
+            $mail->Password = 'wuzm deqt uqqe oecd'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -24,7 +24,6 @@ class EmailService {
             $mail->Body    = $body;
 
             $mail->send();
-            echo 'Message has been sent';
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }

@@ -5,7 +5,6 @@ require_once 'app/models/DAO/OrderDao.php';
 require_once 'app/models/DAO/CartDao.php';
 require_once 'app/models/EmailService.php';
 
-
 class OrderController extends HomeController {
     private $orderDao;
     private $cartDao;
@@ -46,19 +45,19 @@ class OrderController extends HomeController {
     public function thanks() {
         if (isset($_GET['orderId'])) {
             $orderId = $_GET['orderId'];
-            $order = 1;
+            $order = $orderId;
             if ($order) {
                 $userEmail = $_SESSION['user']['email'];
-                $subject = "Xác nhận đơn hàng ";
-                $body = "Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đã được xác nhận. Mã đơn hàng: ";
-
+                $subject = "Xác nhận đơn hàng";
+                $body = "Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đã được xác nhận. Mã đơn hàng: " . $orderId;
+                unset($_SESSION['cart']);
                 $this->emailService->sendEmail($userEmail, $subject, $body);
-                var_dump($this->emailService);
+                $this->view->render('orders/thanks');
             } else {
                 echo 'Lỗi: Đơn hàng không tồn tại.';
             }
         }
     }
-}
 
+}
 ?>

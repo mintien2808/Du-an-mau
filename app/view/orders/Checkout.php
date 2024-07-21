@@ -10,11 +10,13 @@
 <div class="content">
     <h2>Thông Tin Giao Hàng</h2>
     <form action="index.php?url=online/online_checkout" method="POST">
+        <label for="user_name">Tên Người Nhận:</label><br>
+        <input type="text" name="user_name" value="<?php echo $_SESSION['user']['username']; ?>" ><br><br>
         <label for="shipping_address">Địa chỉ giao hàng:</label><br>
-        <textarea name="shipping_address" id="shipping_address" required></textarea><br><br>
-        <label for="user_name">Tên Người Nhận:</label>
-        <input type="text" name='user_name' value='<?php echo $_SESSION['user']['username']?>'><br>
-        
+        <textarea name="shipping_address" id="shipping_address" ></textarea><br><br>
+        <label for="phone">Số điện thoại:</label><br>
+        <input type="text" name="phone" id="phone" ><br><br>
+
         <h2>Sản Phẩm Đã Đặt</h2>
         <table>
             <tr>
@@ -42,15 +44,9 @@
                 <td><?php echo $totalAmount; ?></td>
             </tr>
         </table>
-
-
-        <label for="order_info">Thanh Toán</label><br>
-        <select name="order_info" id="order_info">
-            <option value="Thanh toán qua MoMo">Thanh toán qua MoMo</option>
-            <option value="Thanh toán qua MoMo">Không có </option>
-        </select><br><br>
-        
-        <button type="submit" name='payUrl'>Thanh Toán</button>
+        <input type="hidden" name="order_info" id="order_info" value="Thanh toán qua MoMo"><br><br>
+        <input type="hidden" name="amount" id="amount" value="<?php echo $totalAmount; ?>"><br><br>
+        <button type="submit" name="payUrl">Thanh Toán Qua MoMo</button>
     </form>
 </div>
 <?php include_once('../du-an-mau/app/view/include/footer.php'); ?>
