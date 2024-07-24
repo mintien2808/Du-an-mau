@@ -9,6 +9,7 @@ var_dump($_SESSION['cart']);  ?>
     <title>Sản Phẩm</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/php/du-an-mau/public/css/formal.css">
+
 </head>
 <body>
 <div class="container">
@@ -80,6 +81,9 @@ var_dump($_SESSION['cart']);  ?>
             </ul>
         </div>
     </div>
+    <script>
+    const isUserLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+</script>
     <script src="../du-an-mau/public/js/prod.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

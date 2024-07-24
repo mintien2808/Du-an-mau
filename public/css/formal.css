@@ -34,8 +34,6 @@ body {
     background-color: #f5f5f5;
 }
 
-
-
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -154,7 +152,7 @@ li.rieng0{
 li.rieng a{
     color: black;
 }
-nav li :hover{
+nav li:hover{
     text-decoration: underline;
     color: blue;
 }
@@ -326,7 +324,7 @@ li.footer a{
     text-decoration: none;
     color: black;
 }
-li.footer a :hover{
+li.footer a:hover{  
     color:  red;
     text-decoration: underline;
 }
@@ -341,36 +339,29 @@ section.anh{
 ul.dropdown{
     display: none;
 }
-@media only screen and (max-width:1000px) {
-    .keoDeAn{
+@media (max-width: 1000px) {
+    .keoDeAn {
         display: none;
     }
+}
 
-
-
-} 
-
-  @media (min-width:576px){
-    .container{
+@media (min-width: 576px) {
+    .container {
         max-width: 720px;
     }
- }
+}
 
- @media (min-width:768px){
-    .container{
-        max-width: 720px;
-    }
- }
- @media (min-width:992px){
-    .container{
+@media (min-width: 992px) {
+    .container {
         max-width: 960px;
     }
- }
- @media (min-width:1200px){
-    .container{
-        max-width: 960px;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
     }
- }
+}
 
 
 /* Reset and general styles */
@@ -514,11 +505,9 @@ li.sanPham button{
 }
 
 /* DETAIL PRODUCT  */
-    .product-detail {
+    .product-detail, .related-products {
         max-width: 1200px;
         margin: 20px auto;
-        display: flex;
-        gap: 20px;
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 10px;
@@ -560,11 +549,6 @@ li.sanPham button{
         background-color: #45a049;
     }
 
-    .related-products {
-        max-width: 1200px;
-        margin: 20px auto;
-    }
-
     .related-products h2 {
         font-size: 24px;
         margin-bottom: 20px;
@@ -580,7 +564,7 @@ li.sanPham button{
         flex: 1 1 calc(25% - 20px);
         border: 1px solid #ddd;
         border-radius: 10px;
-        overflow: hidden;
+        overflow: hidden;   
         transition: box-shadow 0.3s;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
@@ -604,7 +588,7 @@ li.sanPham button{
     .product-item p {
         font-size: 16px;
         margin: 10px;
-        color: #c41717;
+        color: #f10c0c;
     }
     .product-item a {
         text-decoration: none;
@@ -644,3 +628,246 @@ li.sanPham button{
         background-color: #d32f2f;
     }
 
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Product Detail Section */
+.product-detail {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.product-image {
+    flex: 1;
+    text-align: center;
+    margin: 10px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-info {
+    flex: 2;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.product-info h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.product-info button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product-info button:hover {
+    background-color: #0056b3;
+}
+
+.quantity-input {
+    margin-top: 10px;
+}
+
+.quantity-input input {
+    width: 60px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+/* Related Products Section */
+.related-products {
+    margin: 20px 0;
+}
+
+.related-products h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-item {
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.product-item h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.product-item p {
+    font-size: 16px;
+}
+
+/* Review Section */
+.product-reviews {
+    margin: 20px 0;
+}
+
+.product-reviews h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.add-review {
+    margin-bottom: 20px;
+}
+
+.add-review h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.add-review textarea,
+.add-review input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.add-review button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-review button:hover {
+    background-color: #218838;
+}
+
+.review-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.review-item .username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-item .rating {
+    font-size: 14px;
+    color: #999;
+}
+
+.review-item .comment {
+    margin-bottom: 5px;
+}
+
+.review-item .created-at {
+    font-size: 14px;
+    color: #999;
+}
+
+.review-item button {
+    background-color: #ffc107;
+    color: black;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.review-item button:hover {
+    background-color: #e0a800;
+}
+
+.edit-form {
+    margin-top: 10px;
+}
+
+.edit-form textarea,
+.edit-form input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.edit-form button {
+    background-color: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-form button:hover {
+    background-color: #138496;
+}
+a.button-like {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(227, 235, 226);
+    background-color: #f90000;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    margin-left: 5px;
+}
+
+a.button-like:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+a.button-like:active {
+    background-color: #004080;
+    border-color: #004080;
+}
+
+a.button-like:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}

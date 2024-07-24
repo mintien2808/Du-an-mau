@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="public/css/formal.css">
+    <link rel="stylesheet" href="../du-an-mau/public/css/formal.css">
     <title>Document</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
             <nav>
                 <ul class="keoDeAn">
                     <li class="rieng0"> <a href="#">
-                            <img src="pic/logo.webp" alt="" class="logo">
+                            <img src="" alt="" class="logo">
                         </a></li>
                     <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
                     <li class="rieng"><a href="introduce">About Us</a></li>

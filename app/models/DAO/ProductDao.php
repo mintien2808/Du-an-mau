@@ -105,15 +105,5 @@ class ProductDAO {
         $stmt = $db->prepare("DELETE FROM categories WHERE id = ?");
         return $stmt->execute([$id]);
     }
-
-    //REVIEW  
-
-    public function getAllReview (){
-        $database = new Database();
-        $db = $database->getConnection();
-        $stmt = $this->db->prepare("SELECT * FROM feedback ");
-        $stmt ->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    }
 }
 ?>
