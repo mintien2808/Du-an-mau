@@ -13,6 +13,7 @@ class ProductController extends HomeController {
     public function index() {
         $products = $this->productDAO->getAllProducts();
         $categories = $this->productDAO->getAllCategories();
+
         $this->view->render('home', ['products' => $products, 'categories' => $categories]);
     }
 
@@ -24,7 +25,15 @@ class ProductController extends HomeController {
 
     public function detail($id) {
         $product = $this->productDAO->getProductById($id);
-        $this->view->render('products/detail', ['product' => $product]);
+        $relatedProducts = $this->productDAO->getRelatedProducts($product['id_category'], $id);
+        $categories = $this->productDAO->getAllCategories();
+        $this->view->render('products/detail', ['product' => $product, 'relatedProducts' => $relatedProducts, 'categories' => $categories]);
     }
+    
+    public function addReview ($id){
+        
+    }
+    
+    
 }
 ?>

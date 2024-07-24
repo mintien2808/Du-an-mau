@@ -94,9 +94,11 @@ class UserController extends HomeController {
         $this->view->render('user/register', ['errors' => $errors]);
     }
 
-    public function profile() {
-        $this->view->render('user/profile', ['user' => $_SESSION['user']]);
+    public function profile($id) {
+        $user = $this->userDAO->getUserById($id);
+        $this->view->render('user/profile', ['user' => $user]);
     }
+
 
     public function logout() {
         $this->cartDao->saveCartToDatabase($_SESSION['user']['id'], $_SESSION['cart']); 
@@ -105,6 +107,7 @@ class UserController extends HomeController {
         session_destroy();
         $this->view->redirect('home');
     }
+
     
 }
 ?>

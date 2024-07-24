@@ -9,48 +9,6 @@ var_dump($_SESSION['cart']);  ?>
     <title>Sản Phẩm</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/php/du-an-mau/public/css/formal.css">
-    <script>
-        function showQuantityInput(productId) {
-            document.getElementById('addButton_' + productId).style.display = 'none';
-            document.getElementById('quantityInput_' + productId).style.display = 'block';
-        }
-
-        function hideQuantityInput(productId) {
-            document.getElementById('addButton_' + productId).style.display = 'block';
-            document.getElementById('quantityInput_' + productId).style.display = 'none';
-        }
-
-        function addToCart(productId, productName, productPrice, productImg) {
-    if (!<?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>) {
-        window.location.href = 'User/login';
-        return; 
-    }
-
-    const quantity = document.getElementById('quantity_' + productId).value;
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'index.php?url=Cart/addToCart', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) { 
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                alert(response.message);
-                hideQuantityInput(productId);
-            } else {
-                alert('Failed to add to cart. Please try again.'); 
-            }
-        }
-    };
-
-    const data = 'product_id=' + encodeURIComponent(productId) +
-                 '&quantity=' + encodeURIComponent(quantity) +
-                 '&product_name=' + encodeURIComponent(productName) +
-                 '&product_price=' + encodeURIComponent(productPrice) +
-                 '&product_img=' + encodeURIComponent(productImg);
-
-    xhr.send(data);
-}
-    </script>
 </head>
 <body>
 <div class="container">
@@ -76,6 +34,7 @@ var_dump($_SESSION['cart']);  ?>
                 </ul>
             </nav>
         </header>
+
 <section class="anh">
     <video width="1300" src="img/3196344-uhd_3840_2160_25fps.mp4" autoplay muted></video>
 </section>
@@ -101,7 +60,7 @@ var_dump($_SESSION['cart']);  ?>
                 $count = 0; 
                 foreach ($products as $product): ?>
                     <li class="sanPham">
-                        <a href="index.php?url=Product/detail/<?php echo $product['id']; ?>"><img src="<?php echo $product['img']; ?>" alt="" class="to-ra"></a>
+                        <a href="index.php?url=Product/detail/<?php echo $product['id']; ?>"><img src="<?php echo $product['img']; ?>" alt="product-img" class="to-ra"></a>
                         <h3><?php echo $product['name']; ?></h3>
                         <p><?php echo $product['price']; ?>đ</p>
                         <button id="addButton_<?php echo $product['id']; ?>" onclick="showQuantityInput(<?php echo $product['id']; ?>)">Thêm</button>
@@ -121,6 +80,7 @@ var_dump($_SESSION['cart']);  ?>
             </ul>
         </div>
     </div>
+    <script src="../du-an-mau/public/js/prod.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

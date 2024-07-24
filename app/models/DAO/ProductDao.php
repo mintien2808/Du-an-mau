@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../config/database.php';
 class ProductDAO {
     private $table = "product";
     private $categoryTable = "categories";
+
+    //PRODUCT
     
     public function getAllProducts() {
         $database = new Database();
@@ -49,6 +51,16 @@ class ProductDAO {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getRelatedProducts($categoryId, $productId) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("SELECT * FROM product WHERE id_category = :categoryId AND id != :productId");
+        $stmt->execute([':categoryId' => $categoryId, ':productId' => $productId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // CATEGORIES
+    
     public function getAllCategories() {
         $database = new Database();
         $db = $database->getConnection();
@@ -92,6 +104,16 @@ class ProductDAO {
         $db = $database->getConnection();
         $stmt = $db->prepare("DELETE FROM categories WHERE id = ?");
         return $stmt->execute([$id]);
+    }
+
+    //REVIEW  
+
+    public function getAllReview (){
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $this->db->prepare("SELECT * FROM feedback ");
+        $stmt ->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 }
 ?>

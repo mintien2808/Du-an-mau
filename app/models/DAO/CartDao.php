@@ -35,28 +35,28 @@ class CartDao {
     }
 
     public function addToCart() {
-        session_start();  // Ensure the session is started
-    
+  
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
             $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
             $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
             $productName = filter_input(INPUT_POST, 'product_name', FILTER_SANITIZE_STRING);
             $productPrice = filter_input(INPUT_POST, 'product_price', FILTER_VALIDATE_FLOAT);
             $productImg = filter_input(INPUT_POST, 'product_img', FILTER_SANITIZE_STRING);
-    
-            if (!$productId || !$quantity || !$productPrice) {
-                echo "Dữ liệu không hợp lệ.";
+            
+            if ($productId === false || $quantity === false || $quantity <= 0 || $productPrice === false || $productPrice < 0) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Invalid input data']);
                 return;
             }
-    
+            
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
             }
-    
+        
             if (isset($_SESSION['cart'][$productId])) {
                 $_SESSION['cart'][$productId]['quantity'] += $quantity;
             } else {
-                
                 $_SESSION['cart'][$productId] = [
                     'product_id' => $productId,
                     'quantity' => $quantity,
@@ -65,13 +65,13 @@ class CartDao {
                     'product_img' => $productImg
                 ];
             }
-    
-            echo "Sản phẩm đã được thêm vào giỏ hàng.";
+            echo json_encode(['success' => true, 'message' => 'Product added to cart']);
         } else {
-            http_response_code(405); 
-            echo "HTTP Method Not Allowed.";
+            http_response_code(405);
+            echo json_encode(['error' => 'HTTP Method Not Allowed']);
         }
     }
+    
 
     public function saveCartToDatabase($userId, $cartData) {
         $sql = "DELETE FROM cart WHERE user_id = ?";
