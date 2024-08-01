@@ -17,7 +17,6 @@ class ReviewController extends HomeController {
             if ( $rating > 5 || $rating < 1 ) {
                 echo json_encode(['success' => false, 'message' => 'Invalid Rating']);
             }
-    
             if ($this->reviewDAO->updateReview($reviewId, $comment, $rating)) {
                 echo json_encode(['success' => true, 'message' => 'Review updated successfully']);
             } else {

@@ -18,7 +18,7 @@
       <input class="sign-up__inp" type="text" placeholder="Tài Khoản" name="username" >
       <input class="sign-up__inp" type="password" placeholder="Password" name="password" >
       <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
-      <a class="forgot__password" href="fgpw">Forgot password</a>
+      <a class="forgot__password" href="fgpass">Forgot password</a>
     </div>
     <div class="sign-up__buttons"><a class="btn btn--register" href="register">Đăng Ký</a>
       <button class="btn btn--signin" type="submit">Đăng Nhập</button>

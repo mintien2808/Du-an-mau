@@ -14,29 +14,14 @@
     <div class="sign-up col-md-12 col-md-offset-2 mt-10">
         <form class="sign-up__form" action="adduser" method="post" enctype="multipart/form-data">
             <div class="sign-up__content">
-                <h2 class="sign-up__title">Thêm</h2>
-                
-                <input class="sign-up__inp" type="text" placeholder="Tài Khoản" name="username">
-                <?php if (isset($errors['username'])) echo "<p style='color:red;'>{$errors['username']}</p>"; ?>
-                
+                <h2 class="sign-up__title">Thêm</h2>                
+                <input class="sign-up__inp" type="text" placeholder="Tài Khoản" name="username">      
                 <input class="sign-up__inp" type="email" placeholder="Email" name="email">
-                <?php if (isset($errors['email'])) echo "<p style='color:red;'>{$errors['email']}</p>"; ?>
-                
                 <input class="sign-up__inp" type="tel" placeholder="Số điện thoại" name="phone">
-                <?php if (isset($errors['phone'])) echo "<p style='color:red;'>{$errors['phone']}</p>"; ?>
-                
                 <input class="sign-up__inp" type="password" placeholder="Password" name="password">
-                <?php if (isset($errors['password'])) echo "<p style='color:red;'>{$errors['password']}</p>"; ?>
-                
                 <input class="sign-up__inp" type="password" placeholder="Password Confirm" name="confirm_password">
-                <?php if (isset($errors['confirm_password'])) echo "<p style='color:red;'>{$errors['confirm_password']}</p>"; ?>
-                
                 <input class="sign-up__inp" type="text" placeholder="Địa chỉ" name="address">
-                <?php if (isset($errors['address'])) echo "<p style='color:red;'>{$errors['address']}</p>"; ?>
-                
-                <input class="sign-up__inp" type="file" name="image">
-                <?php if (isset($errors['image'])) echo "<p style='color:red;'>{$errors['image']}</p>"; ?>
-                
+                <input class="sign-up__inp" type="file" name="image"> 
                 <select name="role" id="role" class="sign-up__inp">
                     <?php
                     $role = array(
@@ -48,6 +33,15 @@
                     }
                     ?>
                 </select>
+                <?php 
+                if (!empty($errors)) {
+                    echo "<ul style='color:red;'>";
+                    foreach ($errors as $error) {
+                        echo "<li>$error</li>";
+                    }
+                    echo "</ul>";
+                }
+                ?>
             </div>
             <div class="sign-up__buttons">
                 <a class="btn btn--register" href="admin">Quay Lại</a>

@@ -21,7 +21,6 @@
       <input class="sign-up__inp" type="password" placeholder="Password" name="password" >
       <input class="sign-up__inp" type="password" placeholder="PasswordConfirm" name="confirm_password" >
       <input class="sign-up__inp" type="file"  name="image" >
-      <a class="forgot__password" href="fgpw">Forgot password</a>
     </div>
     <div class="sign-up__buttons"><a class="btn btn--register" href="login">Đã có tài khoản?</a>
       <button class="btn btn--signin" type="submit">Đăng Ký</button>

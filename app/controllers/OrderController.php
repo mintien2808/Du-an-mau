@@ -1,20 +1,20 @@
 <?php
 // OrderController.php
 require_once 'HomeController.php';
-require_once 'app/models/DAO/OrderDao.php';
-require_once 'app/models/DAO/CartDao.php';
 require_once 'app/models/EmailService.php';
 
 class OrderController extends HomeController {
     private $orderDao;
     private $cartDao;
     private $emailService;
+    private $productDAO;
 
     public function __construct() {
         parent::__construct();
-        $this->orderDao = new OrderDao();
-        $this->cartDao = new CartDao();
+        $this->orderDao = $this->loadModel('OrderDao');
+        $this->cartDao = $this->loadModel('CartDao');
         $this->emailService = new EmailService();
+        $this->productDAO = $this->loadModel('ProductDAO');
     }
 
     public function checkout() {
@@ -45,8 +45,17 @@ class OrderController extends HomeController {
     public function thanks() {
         if (isset($_GET['orderId'])) {
             $orderId = $_GET['orderId'];
-            $order = $orderId;
-            if ($order) {
+            $order = explode('_',$orderId);
+            $getID = $order[0];
+            if ($orderId) {
+                $this->orderDao->updateOrderStatus($getID,'shipped','paid');
+                $orderDetails = $this->orderDao->getOrderItemsByOrderId($getID);
+                foreach ($orderDetails as $detail) {
+                    $productId = $detail['product_id'];
+                    $quantityOrdered = $detail['quantity'];
+                    $this->productDAO->updateProductStock($productId, $quantityOrdered);
+                    
+                }
                 $userEmail = $_SESSION['user']['email'];
                 $subject = "Xác nhận đơn hàng";
                 $body = "Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đã được xác nhận. Mã đơn hàng: " . $orderId;
@@ -58,6 +67,44 @@ class OrderController extends HomeController {
             }
         }
     }
+    public function reorder() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
+            $orderId = filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT);
+    
+            if ($orderId === false) {
+                echo json_encode(['success' => false, 'message' => 'Invalid order ID']);
+                return;
+            }
+            $orderDetails = $this->orderDao->getOrderItemsByOrderId($orderId);
+            if ($orderDetails) {
+                foreach ($orderDetails as $detail) {
+                    $productId = $detail['product_id'];
+                    $quantity = $detail['quantity'];
+                    $name = $detail['product_name'];
+                    $price = $detail['product_price'];
+                    $product = $this->productDAO->getProductById($detail['product_id']);
+                    $img = $product['img'];
+
+                    $_POST['product_id'] = $productId;
+                    $_POST['quantity'] = $quantity;
+                    $_POST['product_name'] = $name;
+                    $_POST['product_price'] = $price;
+                    $_POST['quantity'] = $img;
+    
+                    ob_start();
+                    $this->cartDao->addToCart();
+                    ob_end_clean();
+                }
+                echo json_encode(['success' => true, 'message' => 'Reorder successful!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Order not found']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid request']);
+        }
+    }
+    
+    
 
 }
 ?>

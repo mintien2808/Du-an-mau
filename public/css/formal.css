@@ -535,7 +535,7 @@ li.sanPham button{
     }
 
     .product-info button {
-        background-color: #4CAF50;
+        background-color: #0a6318;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -546,7 +546,7 @@ li.sanPham button{
     }
 
     .product-info button:hover {
-        background-color: #45a049;
+        background-color: #158519;
     }
 
     .related-products h2 {
@@ -562,7 +562,7 @@ li.sanPham button{
 
     .product-item {
         flex: 1 1 calc(25% - 20px);
-        border: 1px solid #ddd;
+        border: 1px solid #111111;
         border-radius: 10px;
         overflow: hidden;   
         transition: box-shadow 0.3s;
@@ -615,7 +615,7 @@ li.sanPham button{
     }
 
     .quantity-input button {
-        background-color: #f44336;
+        background-color: #f49e00;
         color: white;
         border: none;
         border-radius: 5px;
@@ -625,7 +625,7 @@ li.sanPham button{
     }
 
     .quantity-input button:hover {
-        background-color: #d32f2f;
+        background-color: #9d803b;
     }
 
 /* General Styles */
@@ -671,18 +671,7 @@ body {
     margin-bottom: 10px;
 }
 
-.product-info button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
-.product-info button:hover {
-    background-color: #0056b3;
-}
 
 .quantity-input {
     margin-top: 10px;
@@ -693,7 +682,7 @@ body {
     padding: 5px;
     margin-right: 10px;
 }
-
+.quantityInput_
 /* Related Products Section */
 .related-products {
     margin: 20px 0;
@@ -870,4 +859,217 @@ a.button-like:active {
 a.button-like:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination .btn {
+    margin: 0 5px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.pagination .btn.active {
+    background-color: #0056b3;
+}
+
+.pagination .btn:hover {
+    background-color: #0056b3;
+}
+
+ /* PROFILE  NGUOI DUNG */
+ /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for the profile */
+.user-profile {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Profile info section */
+.profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-info img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.profile-info button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.profile-info button:hover {
+    background-color: #218838;
+}
+
+/* Edit profile form section */
+.edit-profile-form {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.edit-profile-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.edit-profile-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-profile-form input,
+.edit-profile-form button {
+    width: 80%;
+    max-width: 400px;
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.edit-profile-form button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-profile-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.edit-profile-form button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-profile-form button[type="button"]:hover {
+    background-color: #c82333;
+}
+
+/* Order history section */
+.order-history {
+    margin-top: 20px;
+}
+
+.order-history h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.order-history ul {
+    list-style: none;
+    padding: 0;
+}
+
+.order-history li {
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-history li p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.order-history li h3 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.order-history ul ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.order-history ul ul li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.order-history ul ul li p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* ADMIN  */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-align: left;
+}
+
+.table-cell, .table-header {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.action-link, .add-link {
+    color: rgb(251, 251, 251);
+    text-decoration: none;
+    margin-right: 10px;
+    border :1px solid #e80a2b;
+    padding : 3px;
+    background-color: #362a08;
+}
+
+.action-link:hover, .add-link:hover {
+    text-decoration: underline;
+
+}
+.avatar-img, .product-img, .category-img, .order-img {
+    width: 60px; /* Thay đổi kích thước ảnh tùy ý */
+    height: auto;
+    border-radius: 5px; /* Tùy chỉnh góc bo tròn */
+    display: block;
 }

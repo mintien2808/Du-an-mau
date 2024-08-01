@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body> 
 <div class="alert text-center title-login">
-    <strong>Quên </strong>
+    <strong>Reset PassWord</strong>
 </div>
 <div class="sign-up col-md-12 col-md-offset-2 mt-10">
-  <form class="sign-up__form" action="fgpass" method="post">
+  <form class="sign-up__form" action="index.php?url=user/rspass" method="post">
     <div class="sign-up__content">
-      <h2 class="sign-up__title">Quên Mật Khẩu</h2>
-      <input class="sign-up__inp" type="email" placeholder="Email..." name="email" required>
+      <h2 class="sign-up__title">Nhập Mật Khẩu mới</h2>
+      <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
+      <input class="sign-up__inp" type="password" placeholder="Mật Khẩu Mới" name="password" required>
+      <input class="sign-up__inp" type="password" placeholder="Xác Nhận Mật Khẩu" name="confirm_password" required>
                 <?php 
                 if (!empty($errors)) {
                     echo "<ul style='color:red;'>";

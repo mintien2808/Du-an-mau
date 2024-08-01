@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../../config/database.php';
         $this->db = $database->getConnection();
     }
 
-    public function getUser($username ) {
+    public function getUser($username) {
         $stmt = $this->db->prepare("SELECT * FROM " . $this->table . " WHERE username = ? ");
         $stmt->execute([$username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);

@@ -35,9 +35,7 @@ class CartDao {
     }
 
     public function addToCart() {
-  
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
             $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
             $quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT);
             $productName = filter_input(INPUT_POST, 'product_name', FILTER_SANITIZE_STRING);
@@ -65,14 +63,12 @@ class CartDao {
                     'product_img' => $productImg
                 ];
             }
-            echo json_encode(['success' => true, 'message' => 'Product added to cart']);
+            echo json_encode(['success' => true, 'message' => 'Product added to cart']);    
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'HTTP Method Not Allowed']);
         }
     }
-    
-
     public function saveCartToDatabase($userId, $cartData) {
         $sql = "DELETE FROM cart WHERE user_id = ?";
         $stmt = $this->db->prepare($sql);

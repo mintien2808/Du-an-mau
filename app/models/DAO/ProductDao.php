@@ -54,9 +54,55 @@ class ProductDAO {
     public function getRelatedProducts($categoryId, $productId) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("SELECT * FROM product WHERE id_category = :categoryId AND id != :productId");
-        $stmt->execute([':categoryId' => $categoryId, ':productId' => $productId]);
+        $productsPerPage = 5; 
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $productsPerPage;
+        $stmt = $db->prepare("
+            SELECT * FROM product 
+            WHERE id_category = :categoryId 
+            AND id != :productId 
+            LIMIT :limit OFFSET :offset
+        ");
+        $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $productsPerPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getTotalRelatedProducts($categoryId, $productId) {
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $stmt = $db->prepare("
+            SELECT COUNT(*) 
+            FROM product 
+            WHERE id_category = :categoryId 
+            AND id != :productId
+        ");
+        
+        $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        
+        return $stmt->fetchColumn();
+    }
+
+    public function updateProductStock($product_id,$quantityOrdered) {  
+        $database = new Database();
+        $db = $database->getConnection();
+        $stmt = $db->prepare("SELECT quantity FROM product WHERE id = :product_id");
+        $stmt->execute([':product_id' => $product_id]);
+        $currentStock = $stmt->fetchColumn();
+        $newStock = $currentStock - $quantityOrdered;   
+        $stmt = $db->prepare("UPDATE product SET quantity = :newStock WHERE id = :product_id");
+        $stmt->execute([
+            ':newStock' => $newStock,
+            ':product_id' => $product_id
+        ]);
     }
 
     // CATEGORIES

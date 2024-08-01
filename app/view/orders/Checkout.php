@@ -11,11 +11,11 @@
     <h2>Thông Tin Giao Hàng</h2>
     <form action="index.php?url=online/online_checkout" method="POST">
         <label for="user_name">Tên Người Nhận:</label><br>
-        <input type="text" name="user_name" value="<?php echo $_SESSION['user']['username']; ?>" ><br><br>
+        <input type="text" name="user_name" value="<?php echo $_SESSION['user']['username']; ?>" required><br><br>
         <label for="shipping_address">Địa chỉ giao hàng:</label><br>
-        <textarea name="shipping_address" id="shipping_address" ></textarea><br><br>
+        <textarea name="shipping_address" id="shipping_address" required></textarea ><br><br>
         <label for="phone">Số điện thoại:</label><br>
-        <input type="text" name="phone" id="phone" ><br><br>
+        <input type="text" name="phone" id="phone" required><br><br>
 
         <h2>Sản Phẩm Đã Đặt</h2>
         <table>

@@ -1,15 +1,19 @@
 <?php
 require_once('HomeController.php');
-require_once('app/models/DAO/ProductDao.php');
-require_once('app/models/DAO/UserDAO.php');
 class AdminController extends HomeController {
+
     private $AdminDao;
     private $productDao;
+    private $UserDao;
+    private $orderDao;
+
     public function __construct() {
         parent::__construct();
-        $this->AdminDao = new AdminDAO();
-        $this->productDao = new productDAO();
-        $this->UserDao = new UserDAO();
+        $this->AdminDao = $this->loadModel('AdminDAO');
+        $this->productDao = $this->loadModel('ProductDAO');
+        $this->UserDao = $this->loadModel('UserDAO');
+        $this->orderDao = $this->loadModel('OrderDao');
+        $this->ReviewDao = $this->loadModel('ReviewDAO');
     }
       
     #USER
@@ -17,7 +21,9 @@ class AdminController extends HomeController {
         $users = $this->AdminDao->getAllUser();
         $products = $this->productDao->getAllProducts();
         $categories = $this->productDao->getAllCategories();
-        $this->view->render('admin/home', ['users' => $users,'products'=>$products,'categories'=>$categories]);
+        $orders = $this->orderDao->getAllOrders();
+        $Reviews = $this->ReviewDao->getAllReview();
+        $this->view->render('admin/home', ['users' => $users,'products'=>$products,'categories'=>$categories,'orders'=>$orders,'reviews'=>$Reviews]);
     }
 
     public function DeleteUser($id){
@@ -81,7 +87,7 @@ class AdminController extends HomeController {
                 }
             }
             if (empty($errors)) {
-                if ($this->AdminDao->getuser($username)) {
+                if ($this->UserDao->checkUserExist($username,$email)) {
                     $errors['exists'] = "Username hoặc Email đã tồn tại!";
                 } else {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -102,31 +108,20 @@ class AdminController extends HomeController {
             $email = $_POST['email'] ?? null;
             $phone = $_POST['phone'] ?? null;
             $password = $_POST['password'] ?? null;
-            $confirm_password = $_POST['confirm_password'] ?? null;
             $address = $_POST['address'] ?? null;
             $image = $_FILES['image'] ?? null;
-    
-            if (empty($username)) {
-                $errors['username'] = "Username không được để trống!";
-            }
-    
-            if (empty($email)) {
-                $errors['email'] = "Email không được để trống!";
-            }
-    
+
             if (empty($phone)) {
-                $errors['phone'] = "Phone không được để trống!";
+               $phone = $user['phone'];
+            } elseif (!preg_match('/^\d{10,15}$/', $phone)) {
+                $phone = $user['phone'];
+            }
+
+            if ($this->UserDao->getUser($username)) {
+                $username = $user['username'];
             }
     
-            if (!empty($password) && $password != $confirm_password) {
-                $errors['confirm_password'] = "Confirm password không trùng khớp!";
-            }
-    
-            if (empty($address)) {
-                $errors['address'] = "Địa chỉ không được để trống!";
-            }
-    
-            $target_file = $user['img']; 
+            $target_file = $user['img'];
             $role = $_POST['role'];
             if (!empty($image['name'])) {
                 $target_dir = "public/img/";
@@ -145,6 +140,7 @@ class AdminController extends HomeController {
             }
     
             if (empty($errors)) {
+
                 $hashedPassword = empty($password) ? $user['password'] : password_hash($password, PASSWORD_DEFAULT);
                 $this->AdminDao->ChangeInfoUser($id, $username, $email, $phone, $hashedPassword, $target_file, $address, $role);
                 header('Location: index.php?url=admin/index');
@@ -152,7 +148,7 @@ class AdminController extends HomeController {
             }
         }
     
-        $this->view->render('admin/fix-info', ['errors' => $errors, 'user' => $user]);
+        $this->view->render('admin/index', ['errors' => $errors, 'user' => $user]);
     }
 
 

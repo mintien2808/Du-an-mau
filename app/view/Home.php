@@ -1,15 +1,11 @@
-
-<?php var_dump($_SESSION['user']['username']);
-var_dump($_SESSION['cart']);  ?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản Phẩm</title>
+    <title>Trang Chủ</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/php/du-an-mau/public/css/formal.css">
-
+    <link rel="stylesheet" href="../du-an-mau/public/css/formal.css">
 </head>
 <body>
 <div class="container">
@@ -20,18 +16,43 @@ var_dump($_SESSION['cart']);  ?>
                             <img src="pic/logo.webp" alt="" class="logo">
                         </a></li>
                     <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
-                    <li class="rieng"><a href="introduce">About Us</a></li>
-                    <li class="rieng"><a href="user/login">Đăng Nhập</a></li>
-                    <li class="rieng"><a href="admin">Admin</a></li>
-                    <li class="rieng"><a href="user/logout">Đăng Xuất</a></li>
                     <li class="rieng"><a href="index.php?url=cart/viewCart">Cart</a></li>
+                    <?php 
+                    if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+                        echo '<li class="rieng"><a href="admin">Admin</a></li>';
+                    }
+                    ?>
+                    <li class="rieng"><a href="introduce">About Us</a></li>
+                    <?php 
+                    if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
+                        
+                     echo '<li class="rieng"><a href="user/login">Đăng Nhập</a></li> ';
+                    }else{
+                        echo '<li class="rieng"><a href="index.php?url=user/profile/'.$_SESSION['user']['id'].'">Thông Tin người dùng</a></li>';
+                        echo '<li class="rieng"><a href="user/logout">Đăng Xuất</a></li>';
+                    }
+                    ?>
                 </ul>
 
                 <ul class="dropdown">
-                    <li class="rieng rieng1"><a href="#">Trang chủ</a></li>
+                <li class="rieng0"> <a href="#">
+                            <img src="pic/logo.webp" alt="" class="logo">
+                        </a></li>
+                    <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
+                    <li class="rieng"><a href="index.php?url=cart/viewCart">Cart</a></li>
+                    <?php 
+                    if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+                        echo '<li class="rieng"><a href="admin">Admin</a></li>';
+                    }
+                    ?>
                     <li class="rieng"><a href="introduce">About Us</a></li>
-                    <li class="rieng"><a href="user/login">Đăng Nhập</a></li>
-                    <li class="rieng"><a href="user/logout">Đăng Xuất</a></li>
+                    <?php 
+                    if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
+                     echo '<li class="rieng"><a href="user/login">Đăng Nhập</a></li> ';
+                    }else{
+                        echo '<li class="rieng"><a href="user/logout">Đăng Xuất</a></li>';
+                    }
+                    ?>
                 </ul>
             </nav>
         </header>

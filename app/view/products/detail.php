@@ -9,15 +9,16 @@
         <h1><?php echo $product['name']; ?></h1>
         <p>Giá: <?php echo number_format($product['price']); ?>đ</p>
         <p><?php echo $product['description']; ?></p>
-        <button id="addButton_<?php echo $product['id']; ?>" onclick="showQuantityInput(<?php echo $product['id']; ?>)">Add to Cart</button>
+        <button id="addButton_<?php echo $product['id']; ?>" class="btn btn-add" onclick="showQuantityInput(<?php echo $product['id']; ?>)">Add to Cart</button>
         <div id="quantityInput_<?php echo $product['id']; ?>" class="quantity-input" style="display: none;">
             <input type="number" id="quantity_<?php echo $product['id']; ?>" name="quantity" value="1" min="1">
-            <button onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo $product['name']; ?>', <?php echo $product['price']; ?>, '<?php echo $product['img']; ?>')">Add</button>
-            <button onclick="hideQuantityInput(<?php echo $product['id']; ?>)">Cancel</button>
+            <button onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo $product['name']; ?>', <?php echo $product['price']; ?>, '<?php echo $product['img']; ?>')" class="btn btn-submit">Add</button>
+            <button onclick="hideQuantityInput(<?php echo $product['id']; ?>)" class="btn btn-cancel">Cancel</button>
         </div>
-        <a href="index.php?url=home"><button>Quay về trang mua</button></a>
+        <a href="index.php?url=home"><button class="btn btn-back">Quay về trang mua</button></a>
     </div>
 </div>
+
 
 <div class="related-products">
     <h2>Sản phẩm cùng danh mục</h2>
@@ -31,6 +32,22 @@
                 </a>
             </div>
         <?php endforeach; ?>
+    </div>
+
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="index.php?url=product/detail/<?php echo $product['id']?>&page=<?php echo $page - 1; ?>" class="btn btn-pagination">« Previous</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <a href="index.php?url=product/detail/<?php echo $product['id']?>&page=<?php echo $i; ?>" class="btn btn-pagination <?php echo $i === $page ? 'active' : ''; ?>">
+                <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPages): ?>
+            <a href="index.php?url=product/detail/<?php echo $product['id']?>&page=<?php echo $page + 1; ?>" class="btn btn-pagination">Next »</a>
+        <?php endif; ?>
     </div>
 </div>
 

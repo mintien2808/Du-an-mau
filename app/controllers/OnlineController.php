@@ -20,7 +20,7 @@
                             $orderInfo = "Thanh toán qua MoMo";
                             $amount = "10000";
                             $orderId = rand(00,9999);
-                            $redirectUrl = "https://localhost/php/du-an-mau/index.php?url=order/thanks&orderId=" . $uniqueOrderId;
+                            $redirectUrl = "https://localhost/php/du-an-mau/index.php?url=order/thanks";
                             $ipnUrl = "https://localhost/php/du-an-mau/index.php?url=order/thanks";
                             $extraData = "";
         
@@ -38,7 +38,7 @@
                                 foreach ($cart as $item) {
                                     $this->orderDao->addOrderItem($orderIds, $item['product_id'], $item['product_name'], $item['product_price'], $item['quantity'], $userName, $phone);
                                 }
-                                $uniqueOrderId = $orderId . '_' . time();
+                                $uniqueOrderId = $orderIds . '_' . time();
                                 // Don't Touch
                                 $partnerCode = $partnerCode;
                                 $accessKey = $accessKey;
@@ -69,7 +69,7 @@
                                     'requestType' => $requestType,
                                     'signature' => $signature);
                                 $result = $this->execPostRequest($endpoint, json_encode($data));
-                                $jsonResult = json_decode($result, true); 
+                                $jsonResult = json_decode($result, true);
                                 header('Location: ' . $jsonResult['payUrl']);
                         }
                     }else{
