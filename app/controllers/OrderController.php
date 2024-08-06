@@ -8,6 +8,7 @@ class OrderController extends HomeController {
     private $cartDao;
     private $emailService;
     private $productDAO;
+    private $DcodeDao;
 
     public function __construct() {
         parent::__construct();
@@ -15,31 +16,49 @@ class OrderController extends HomeController {
         $this->cartDao = $this->loadModel('CartDao');
         $this->emailService = new EmailService();
         $this->productDAO = $this->loadModel('ProductDAO');
+        $this->DcodeDao = $this->loadModel('DcodeDao');
     }
-
     public function checkout() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $shippingAddress = $_POST['shipping_address'];
             $phone = $_POST['phone'];
             $cart = $_SESSION['cart'] ?? [];
+
             if (empty($cart)) {
                 $this->view->redirect('cart/viewCart');
                 return;
             }
-    
+
             $totalAmount = array_reduce($cart, function($sum, $item) {
                 return $sum + ($item['product_price'] * $item['quantity']);
             }, 0);
-    
-            $userId = $_SESSION['user']['id'];
-            $user_name =$_SESSION['user']['username'];
-            $orderId = $this->orderDao->createOrder($userId, $totalAmount, $shippingAddress, 'pending');
-    
-            foreach ($cart as $item) {
-                $this->orderDao->addOrderItem($orderId, $item['product_id'], $item['product_name'], $item['product_price'], $item['quantity'],$user_name,$phone);
+
+            $discountCode = $_POST['discount_code'] ?? null;
+            $discountAmount = 5000;
+
+            if ($discountCode) {
+                $discount = $this->DcodeDao->getDiscountByCode($discountCode);
+                if ($discount) {
+                    $discountAmount = $discount['amount'];
+                }
             }
+
+            $totalAmount -= $discountAmount;
+            if ($totalAmount < 10000) {
+                $totalAmount = 10000;
+            }
+
+            $userId = $_SESSION['user']['id'];
+            $user_name = $_SESSION['user']['username'];
+            $orderId = $this->orderDao->createOrder($userId, $totalAmount, $shippingAddress, 'pending');
+
+            foreach ($cart as $item) {
+                $this->orderDao->addOrderItem($orderId, $item['product_id'], $item['product_name'], $item['product_price'], $item['quantity'], $user_name, $phone);
+            }
+
         } else {
-            $this->view->render('orders/checkout');
+            $discountCodes = $this->DcodeDao->getAllDiscountCodes();
+            $this->view->render('orders/checkout', ['discountCodes' => $discountCodes]);
         }
     }
     public function thanks() {
@@ -104,7 +123,5 @@ class OrderController extends HomeController {
         }
     }
     
-    
-
 }
 ?>

@@ -4,7 +4,7 @@ class View {
         extract($data);
         require_once 'app/view/' . $view . '.php';
     }
-    
+        
     public function redirect($url) {
         header("Location: ../index.php?url=$url");
         exit;
@@ -14,6 +14,5 @@ class View {
         header("Location: $url");
         exit;
     }
-    
 }
 ?>

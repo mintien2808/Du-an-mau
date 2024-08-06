@@ -17,13 +17,13 @@
       <h2 class="sign-up__title">Quên Mật Khẩu</h2>
       <input class="sign-up__inp" type="email" placeholder="Email..." name="email" required>
                 <?php 
-                if (!empty($errors)) {
-                    echo "<ul style='color:red;'>";
-                    foreach ($errors as $error) {
-                        echo "<li>$error</li>";
-                    }
+                if (!empty($messages)) {
+                    echo "<ul>";
+                    foreach ($messages as $msg) {
+                      echo "<div class='alert alert-{$msg['type']}'>{$msg['message']}</div>";
                     echo "</ul>";
                 }
+              }
                 ?>
     </div>
     <div class="sign-up__buttons"><a class="btn btn--register" href="login">Back To Login</a>

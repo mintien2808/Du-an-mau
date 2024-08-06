@@ -1,12 +1,14 @@
     <?php
     require_once 'HomeController.php';
     require_once 'app/models/DAO/OrderDAO.php';
+    require_once 'app/models/DAO/DcodeDao.php';
         class OnlineController extends HomeController{
             private $orderDao;  
             public function __construct() {
                 parent::__construct();
                 $this->view = new View();
                 $this->orderDao = new OrderDao();
+                $this->DcodeDao = new DcodeDao();
             }
 
             public function online_checkout(){
@@ -25,21 +27,36 @@
                             $extraData = "";
         
                         if (!empty($_POST)){
-                                $userName = $_POST['user_name'];
-                                $shippingAddress = $_POST['shipping_address'];
-                                $phone = $_POST['phone'];
-                                $cart = $_SESSION['cart'] ?? [];
-                                $totalAmount = array_reduce($cart, function($sum, $item) {
-                                    return $sum + ($item['product_price'] * $item['quantity']);
-                                }, 0);
-                                $userId = $_SESSION['user']['id'];
-                                $orderIds = $this->orderDao->createOrder($userId, $totalAmount, $shippingAddress, 'pending');
+                            $userName = $_POST['user_name'];
+                            $shippingAddress = $_POST['shipping_address'];
+                            $phone = $_POST['phone'];
+                            $cart = $_SESSION['cart'] ?? [];
                     
-                                foreach ($cart as $item) {
-                                    $this->orderDao->addOrderItem($orderIds, $item['product_id'], $item['product_name'], $item['product_price'], $item['quantity'], $userName, $phone);
+                            $totalAmount = array_reduce($cart, function($sum, $item) {
+                                return $sum + ($item['product_price'] * $item['quantity']);
+                            }, 0);
+                    
+                            $discountCode = $_POST['discount_code'] ?? null;
+                            if ($discountCode) {
+                                $discountAmount = $this->DcodeDao->getDiscountAmountByCode($discountCode);
+                                if ($discountAmount) {
+                                    $totalAmount -= $discountAmount;
+                                    if ($totalAmount < 10000) {
+                                        $totalAmount = 10000;
+                                    }
+                                } else {
+                                    $this->view->render('orders/checkout', ['error' => 'Mã giảm giá không hợp lệ.']);
+                                    return;
                                 }
+                            }
+                    
+                            $userId = $_SESSION['user']['id'];
+                            $orderIds = $this->orderDao->createOrder($userId, $totalAmount, $shippingAddress, 'pending');
+                            
+                            foreach ($cart as $item) {
+                                $this->orderDao->addOrderItem($orderIds, $item['product_id'], $item['product_name'], $item['product_price'], $item['quantity'], $userName, $phone);
+                            }
                                 $uniqueOrderId = $orderIds . '_' . time();
-                                // Don't Touch
                                 $partnerCode = $partnerCode;
                                 $accessKey = $accessKey;
                                 $serectkey = $secretKey;
@@ -72,8 +89,6 @@
                                 $jsonResult = json_decode($result, true);
                                 header('Location: ' . $jsonResult['payUrl']);
                         }
-                    }else{
-                        echo 'gg';
                     }
             }
             public function execPostRequest($url, $data){

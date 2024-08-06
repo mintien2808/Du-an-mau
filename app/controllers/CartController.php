@@ -11,6 +11,7 @@ require_once('HomeController.php');
 
         public function addToCart() {
         $cart = $this->cartDao->addToCart();
+        
         }   
         public function viewCart() {
             $cart = $_SESSION['cart'] ?? [];

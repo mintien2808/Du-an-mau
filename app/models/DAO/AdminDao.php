@@ -29,10 +29,11 @@ require_once __DIR__ . '/../../../config/database.php';
         return $stmt->execute([$username, $email, $phone, $hashedPassword, $imagePath, $role,$address]);    
     }
 
-    public function ChangeInfoUser($id, $username, $email, $phone, $hashedPassword,$imagePath,$address, $role){
-        $stmt = $this->db->prepare("UPDATE " . $this->table . " SET username = ?, email = ?, phone = ?, password = ?, img = ?,address =?, role = ? WHERE id = ?");
-        return $stmt->execute([$username, $email, $phone, $hashedPassword, $imagePath, $address,$role, $id]);
+    public function ChangeInfoUser($id, $username, $email, $phone, $hashedPassword, $imagePath, $address, $role) {
+        $stmt = $this->db->prepare("UPDATE user SET username = ?, email = ?, phone = ?, password = ?, img = ?, address = ?, role = ? WHERE id = ?");
+        return $stmt->execute([$username, $email, $phone, $hashedPassword, $imagePath, $address, $role, $id]);
     }
+    
 
     public function DeleteUser($id) {
         $stmt = $this->db->prepare("DELETE FROM " . $this->table . " WHERE id = ?");

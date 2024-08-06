@@ -6,6 +6,8 @@ class AdminController extends HomeController {
     private $productDao;
     private $UserDao;
     private $orderDao;
+    private $ReviewDao;
+    private $DcodeDao;
 
     public function __construct() {
         parent::__construct();
@@ -14,18 +16,31 @@ class AdminController extends HomeController {
         $this->UserDao = $this->loadModel('UserDAO');
         $this->orderDao = $this->loadModel('OrderDao');
         $this->ReviewDao = $this->loadModel('ReviewDAO');
+        $this->DcodeDao = $this->loadModel('DcodeDao');
     }
       
-    #USER
     public function index(){
         $users = $this->AdminDao->getAllUser();
         $products = $this->productDao->getAllProducts();
         $categories = $this->productDao->getAllCategories();
         $orders = $this->orderDao->getAllOrders();
         $Reviews = $this->ReviewDao->getAllReview();
-        $this->view->render('admin/home', ['users' => $users,'products'=>$products,'categories'=>$categories,'orders'=>$orders,'reviews'=>$Reviews]);
+        $code = $this->DcodeDao->getAllDiscountCodes();
+        $orderdetail = $this->orderDao->getAllOrder_items();
+        $orderDetailsort = $this->orderDao->getAllOrdersWithDetails();
+        $this->view->render('admin/home', [
+            'users' => $users,
+            'products' => $products,
+            'categories' => $categories,
+            'orders' => $orders,
+            'reviews' => $Reviews,
+            'coupons' => $code,
+            'orderdetail' => $orderdetail,
+            'orderDetails' => $orderDetailsort
+        ]);
     }
 
+   #USER
     public function DeleteUser($id){
         $deleteUser = $this->AdminDao->DeleteUser($id);
         header('Location: index.php?url=admin/index');
@@ -99,7 +114,7 @@ class AdminController extends HomeController {
         $this->view->render('admin/Form-add', ['errors' => $errors]);
     }
 
-    public function ChangeUserInfo($id){
+    public function ChangeUserInfo($id) {
         $errors = [];
         $user = $this->UserDao->getUserById($id);
     
@@ -110,19 +125,18 @@ class AdminController extends HomeController {
             $password = $_POST['password'] ?? null;
             $address = $_POST['address'] ?? null;
             $image = $_FILES['image'] ?? null;
-
+    
             if (empty($phone)) {
-               $phone = $user['phone'];
+                $phone = $user['phone'];
             } elseif (!preg_match('/^\d{10,15}$/', $phone)) {
                 $phone = $user['phone'];
             }
-
+    
             if ($this->UserDao->getUser($username)) {
                 $username = $user['username'];
             }
     
             $target_file = $user['img'];
-            $role = $_POST['role'];
             if (!empty($image['name'])) {
                 $target_dir = "public/img/";
                 $target_file = $target_dir . basename($image["name"]);
@@ -140,9 +154,8 @@ class AdminController extends HomeController {
             }
     
             if (empty($errors)) {
-
                 $hashedPassword = empty($password) ? $user['password'] : password_hash($password, PASSWORD_DEFAULT);
-                $this->AdminDao->ChangeInfoUser($id, $username, $email, $phone, $hashedPassword, $target_file, $address, $role);
+                $this->AdminDao->ChangeInfoUser($id, $username, $email, $phone, $hashedPassword, $target_file, $address, $_POST['role']);
                 header('Location: index.php?url=admin/index');
                 exit;
             }
@@ -150,6 +163,7 @@ class AdminController extends HomeController {
     
         $this->view->render('admin/index', ['errors' => $errors, 'user' => $user]);
     }
+    
 
 
     #PRODUCT 
@@ -203,7 +217,7 @@ class AdminController extends HomeController {
             }
 
             if (empty($errors)) {
-                $this->productDao->addProduct($name, $price, $quantity, $description, $target_file, $category_id);
+                $this->productDao->addProduct($name, $description, $price, $target_file,$quantity, $category_id);
                 $this->view->redirect('admin/index');
             }
         }
@@ -360,6 +374,38 @@ class AdminController extends HomeController {
         $this->view->render('admin/UpdateCategory', ['errors' => $errors,'categories'=>$categories]);
     }
 
+    #Review 
+    public function editReview($id){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $comment = $_POST['comment'];
+            $rating = $_POST['rating'];
+
+            if ( $rating > 5 || $rating < 1 ) {
+                echo json_encode(['success' => false, 'message' => 'Invalid Rating']);
+            }
+            if ($this->ReviewDao->updateReview($id, $comment, $rating)) {
+                header('Location: index.php?url=admin/index');
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to update review']);
+            }
+        }
+        $this->view->render('admin/updateReview');
+    }
+
+    public function DeleteReview($id) {
+        $deleteUser = $this->ReviewDao-> deleteReview($id);
+        header('Location: index.php?url=admin/index');
+    }
+    #Order 
+
+    public function DeleteOrder($id){
+        $deleteUser = $this->orderDao->deleteOrders($id);
+        header('Location: index.php?url=admin/index');
+    }
+
+
+
 }
 
+    
 

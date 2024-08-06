@@ -9,105 +9,122 @@
 </head>
 <body>
 <div class="container">
-        <header>
-            <nav>
-                <ul class="keoDeAn">
-                    <li class="rieng0"> <a href="#">
-                            <img src="pic/logo.webp" alt="" class="logo">
-                        </a></li>
-                    <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
-                    <li class="rieng"><a href="index.php?url=cart/viewCart">Cart</a></li>
-                    <?php 
-                    if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
-                        echo '<li class="rieng"><a href="admin">Admin</a></li>';
-                    }
-                    ?>
-                    <li class="rieng"><a href="introduce">About Us</a></li>
-                    <?php 
-                    if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
-                        
-                     echo '<li class="rieng"><a href="user/login">Đăng Nhập</a></li> ';
-                    }else{
-                        echo '<li class="rieng"><a href="index.php?url=user/profile/'.$_SESSION['user']['id'].'">Thông Tin người dùng</a></li>';
-                        echo '<li class="rieng"><a href="user/logout">Đăng Xuất</a></li>';
-                    }
-                    ?>
-                </ul>
-
-                <ul class="dropdown">
-                <li class="rieng0"> <a href="#">
-                            <img src="pic/logo.webp" alt="" class="logo">
-                        </a></li>
-                    <li class="rieng rieng1"><a href="home">Trang chủ</a></li>
-                    <li class="rieng"><a href="index.php?url=cart/viewCart">Cart</a></li>
-                    <?php 
-                    if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
-                        echo '<li class="rieng"><a href="admin">Admin</a></li>';
-                    }
-                    ?>
-                    <li class="rieng"><a href="introduce">About Us</a></li>
-                    <?php 
-                    if(!isset($_SESSION['user']) && empty($_SESSION['user'])){
-                     echo '<li class="rieng"><a href="user/login">Đăng Nhập</a></li> ';
-                    }else{
-                        echo '<li class="rieng"><a href="user/logout">Đăng Xuất</a></li>';
-                    }
-                    ?>
-                </ul>
-            </nav>
-        </header>
-
-<section class="anh">
-    <video width="1300" src="img/3196344-uhd_3840_2160_25fps.mp4" autoplay muted></video>
-</section>
-
-<h2>Danh Mục</h2>
-    <main>
-        <ul>
-            <?php foreach ($categories as $category): ?>
-                <li class="anh">
-                    <a href="index.php?url=Product/showByCategory/<?php echo $category['id']; ?>" class="category">
-                        <img src="<?php echo $category['img']; ?>" alt="">
-                    </a>
-                    <h5><?php echo $category['name']; ?></h5>
-                </li>
-            <?php endforeach; ?>
+<header>
+    <nav>
+        <ul class="nav-menu">
+            <li class="nav-item logo-item"><a href="#"><img src="pic/logo.webp" alt="" class="logo"></a></li>
+            <li class="nav-item home-item"><a href="home">Trang chủ</a></li>
+            <li class="nav-item"><a href="index.php?url=cart/viewCart">Cart</a></li>
+            <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+                echo '<li class="nav-item"><a href="admin">Admin</a></li>';
+            } ?>
+            <li class="nav-item"><a href="introduce">About Us</a></li>
+            <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])) {
+                echo '<li class="nav-item"><a href="user/login">Đăng Nhập</a></li>';
+            } else {
+                echo '<li class="nav-item"><a href="index.php?url=user/profile/'.$_SESSION['user']['id'].'">Thông Tin người dùng</a></li>';
+                echo '<li class="nav-item"><a href="user/logout">Đăng Xuất</a></li>';
+            } ?>
         </ul>
-    </main>
-    <div class="content">
-        <h1>Sản Phẩm</h1>
-        <div class="sanPham">
+    </nav>
+</header>
+
+<div class="anh">
+    <video autoplay>
+        <source src="public/img/3196344-uhd_3840_2160_25fps.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+    <h2>Danh Mục</h2>
+<main>
+    <ul class="category-list">
+        <?php foreach ($categories as $category): ?>
+            <li class="category-item">
+                <a href="index.php?url=Product/showByCategory/<?php echo $category['id']; ?>" class="category-link">
+                    <img src="<?php echo $category['img']; ?>" alt="Category Image">
+                </a>
+                <h5 class="category-name"><?php echo $category['name']; ?></h5>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</main>
+
+<div class="prd-container">
+    <h2>Sản Phẩm</h2>
+    <ul class="prd-grid">
+        <?php foreach ($products as $product): ?>
+            <li class="prd-card">
+                <a href="index.php?url=Product/detail/<?php echo $product['id']; ?>" class="prd-link">
+                    <img src="<?php echo $product['img']; ?>" alt="Product Image" class="prd-image">
+                </a>
+                <h3 class="prd-title"><?php echo $product['name']; ?></h3>
+                <p class="prd-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</p>
+                <button id="addButton_<?php echo $product['id']; ?>" onclick="showQuantityInput(<?php echo $product['id']; ?>)" class="btn-add">Thêm</button>
+                <div id="quantityInput_<?php echo $product['id']; ?>" class="quantity-controls hidden">
+                    <input type="number" id="quantity_<?php echo $product['id']; ?>" name="quantity" min="1" value="1" class="quantity-field">
+                    <button onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo $product['name']; ?>', <?php echo $product['price']; ?>, '<?php echo $product['img']; ?>')" class="btn-add-to-cart">Add to Cart</button>
+                    <button type="button" onclick="hideQuantityInput(<?php echo $product['id']; ?>)" class="btn-cancel">Hủy</button>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
+
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <a href="#"><img src="pic/logo.webp" alt="Logo"></a>
+        </div>
+
+        <div class="footer-icons">
             <ul>
-                <?php 
-                $count = 0; 
-                foreach ($products as $product): ?>
-                    <li class="sanPham">
-                        <a href="index.php?url=Product/detail/<?php echo $product['id']; ?>"><img src="<?php echo $product['img']; ?>" alt="product-img" class="to-ra"></a>
-                        <h3><?php echo $product['name']; ?></h3>
-                        <p><?php echo $product['price']; ?>đ</p>
-                        <button id="addButton_<?php echo $product['id']; ?>" onclick="showQuantityInput(<?php echo $product['id']; ?>)">Thêm</button>
-                        <div id="quantityInput_<?php echo $product['id']; ?>" style="display:none;">
-                            <input type="number" id="quantity_<?php echo $product['id']; ?>" name="quantity" min="1" value="1">
-                            <button onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo $product['name']; ?>', <?php echo $product['price']; ?>, '<?php echo $product['img']; ?>')">Add to Cart</button>
-                            <button type="button" onclick="hideQuantityInput(<?php echo $product['id']; ?>)">Hủy</button>
-                        </div>
-                    </li>
-                    <?php 
-                    $count++;
-                    if ($count % 5 == 0) { 
-                        echo '</ul><ul>';
-                    }
-                    ?>
-                <?php endforeach; ?>
+                <li><a href="#"><img src="pic/tai1.png" alt="Icon 1"></a></li>
+                <li><a href="#"><img src="pic/tai2.png" alt="Icon 2"></a></li>
+                <li><a href="#"><img src="pic/tai3.png" alt="Icon 3"></a></li>
+                <li><a href="#"><img src="pic/tai4.png" alt="Icon 4"></a></li>
             </ul>
         </div>
+
+        <div class="footer-links">
+            <div class="footer-info">
+                <p>Thương hiệu thời trang MARC - CÔNG TY CỔ PHẦN SẢN XUẤT THƯƠNG MẠI NÉT VIỆT
+                    Địa chỉ: Tầng 15.06 Tòa nhà Văn phòng Golden King, Số 15 Nguyễn Lương Bằng, Phường Tân Phú,
+                    Quận 7, Tp. HCM</p>
+                <p>Chính sách bảo mật | Các điều khoản và điều kiện</p>
+            </div>
+
+            <div class="footer-section">
+                <h2>Về chúng tôi</h2>
+                <ul>
+                    <li><a href="#">Giới thiệu MARC</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h2>Hỗ trợ khách hàng</h2>
+                <ul>
+                    <li><a href="#">Liên hệ đến MARC</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="#">Hướng dẫn tạo tài khoản</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h2>Liên lạc</h2>
+                <p>Đặt hàng trực tuyến (8h-21h) 1900 636942</p>
+            </div>
+        </div>
     </div>
-    <script>
-    const isUserLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-</script>
-    <script src="../du-an-mau/public/js/prod.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</footer>
+
+<script>const isUserLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;</script>
+<script src="../du-an-mau/public/js/prod.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

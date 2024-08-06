@@ -25,8 +25,8 @@ class ProductDAO {
     public function addProduct($name, $description, $price, $image,$quantity,$id_cate) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, description, price, img,quantity,id_category) VALUES (?, ?, ?, ?,?,?)");
-        return $stmt->execute([$name, $description, $price, $image,$quantity,$id_cate]);
+        $stmt = $db->prepare("INSERT INTO " . $this->table . " (name, price, quantity, img,description,id_category) VALUES (?, ?, ?, ?,?,?)");
+        return $stmt->execute([$name,$price,$quantity, $image,$description,$id_cate]);
     }
 
     public function updateProduct($id, $name, $price, $quantity, $description, $image, $id_cate) {

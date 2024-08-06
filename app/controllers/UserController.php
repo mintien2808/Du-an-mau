@@ -1,12 +1,14 @@
 <?php
 require_once 'HomeController.php';
 require_once 'app/models/EmailService.php';
+require_once 'app/models/Message.php';
 
 class UserController extends HomeController {
     private $userDao;
     private $cartDao;
     private $orderDao;
     private $emailService;
+    private $Message;
 
     public function __construct() {
         parent::__construct();
@@ -14,6 +16,7 @@ class UserController extends HomeController {
         $this->cartDao = $this->loadModel('CartDAO');
         $this->orderDao = $this->loadModel('OrderDao');
         $this->emailService = new EmailService();
+        $this->message = new Message();
 
     }
 
@@ -86,12 +89,12 @@ class UserController extends HomeController {
                 }
             }
             if (empty($errors)) {
-                if ($this->userDao->checkUserExist($username,$email)) {
+                if ($this->userDao->checkUserExist($username , $email)) {
                     $errors['exists'] = "Username hoặc Email đã tồn tại!";
                 } else {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     $this->userDao->addUser($username, $email, $phone, $hashedPassword, $target_file,$role);
-                    $this->view->redirect('login');
+                    header('location:login');
                 }
             }
         }
@@ -169,42 +172,47 @@ class UserController extends HomeController {
         }
     }
     
-    public function fgpass(){
+    public function fgpass() {
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? null;
-             
-            if($email){
-
-            $userExist = $this->userDao->checkUserByEmail($email);
-                if($userExist){
-
-                $resetToken = bin2hex(random_bytes(16));
-                $expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
-
-                $this->userDao->setToken($userExist['id'],$resetToken,$expiry);
-
-                $resetLink = "http://localhost/php/du-an-mau/index.php?url=user/rspass&token=$resetToken";
-                $subject = "Password Reset Request";
-                $body = "Click the following link to reset your password: $resetLink";
-
-                $this->emailService->sendEmail($email, $subject, $body);
-
-               header("location:/php/du-an-mau/app/view/user/login");
-            }
-                $errors['invalid']= 'Không tồn tại email này';
+    
+            if ($email) {
+                $userExist = $this->userDao->checkUserByEmail($email);
+                if ($userExist) {
+                    // $resetToken = bin2hex(random_bytes(16));
+                    // $expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+    
+                    // $this->userDao->setToken($userExist['id'], $resetToken, $expiry);
+    
+                    // $resetLink = "http://localhost/php/du-an-mau/index.php?url=user/rspass&token=$resetToken";
+                    // $subject = "Password Reset Request";
+                    // $body = "Click the following link to reset your password: $resetLink";
+    
+                    // $this->emailService->sendEmail($email, $subject, $body);
+                    $this->message->addMessage('success', 'Yêu cầu đặt lại mật khẩu đã được gửi đến email của bạn.');
+                    echo '<script>
+                            setTimeout(function() {
+                                window.location.href = "https://gmail.com";
+                            }, 2500);
+                          </script>';
+                } else {
+                    $this->message->addMessage('danger', 'Không tồn tại email này.');
+                }
+            } else {
+                $this->message->addMessage('warning', 'Vui lòng nhập email.');
             }
         }
-        
-        $this->view->render('user/fgpw', ['errors' => $errors]);
+        $this->view->render('user/fgpw', ['errors' => $errors, 'messages' => $this->message->getMessages()]);
     }
+    
     public function rspass() {
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['token']) && isset($_POST['password']) && isset($_POST['confirm_password'])) {
             $token = $_POST['token'];
             $password = $_POST['password'];
             $confirm_password = $_POST['confirm_password'];
-    
+            
             if ($password === $confirm_password) {
                 $user = $this->userDao->getUserByResetToken($token);
     
@@ -214,10 +222,10 @@ class UserController extends HomeController {
                     $this->userDao->clearPasswordResetToken($user['id']);
                     header("location:/php/du-an-mau/user/login");
                 } else {
-                    $errors['A'] = 'Invalid or expired token';
+                    $errors['A'] = 'Hết hạn thay đổi mật khẩu';
                 }
             } else {
-                $errors['D'] = 'Password do not match' ;
+                $errors['D'] = 'mật khẩu không trùng khớp' ;
             }
         }
         $this->view->render('user/repass', ['errors' => $errors]);

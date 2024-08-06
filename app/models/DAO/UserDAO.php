@@ -13,7 +13,7 @@ class UserDAO {
     public function checkUserExist($username, $email) {
         $database = new Database();
         $db = $database->getConnection();
-        $stmt = $db->prepare("SELECT * FROM " . $this->table . " WHERE username = ? AND email = ?");
+        $stmt = $db->prepare("SELECT * FROM " . $this->table . " WHERE username = ? OR email = ?");
         $stmt->execute([$username, $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

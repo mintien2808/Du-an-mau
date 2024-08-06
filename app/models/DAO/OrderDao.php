@@ -46,5 +46,48 @@ class OrderDao {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getAllOrder_items() {
+        $stmt = $this->db->prepare('SELECT * FROM order_items');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function hasPurchasedProduct($user_name, $productId) {
+        $query = $this->db->prepare("SELECT COUNT(*) FROM order_items WHERE user_name = :user_name AND product_id = :product_id");
+        $query->execute(['user_name' => $user_name, 'product_id' => $productId]);
+        return $query->fetchColumn() > 0;
+    }
+
+    public function deleteOrders($id) {
+        try {
+            $this->db->beginTransaction();
+            $query = $this->db->prepare('DELETE FROM order_items WHERE order_id = :order_id');
+            $query->bindParam(':order_id', $id, PDO::PARAM_INT);
+            $query->execute();
+            $query = $this->db->prepare('DELETE FROM orders WHERE id = :id');
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+            $this->db->commit();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
+    public function getAllOrdersWithDetails() {
+        $query = $this->db->prepare("
+            SELECT 
+                o.id AS order_id,
+                o.user_id,
+                o.total_amount,
+                o.order_date,
+                od.product_id,
+                od.quantity,
+                od.product_price
+            FROM orders o
+            JOIN order_items od ON o.id = od.order_id
+        ");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 ?>

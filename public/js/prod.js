@@ -1,13 +1,21 @@
 // product.js
 
 function showQuantityInput(productId) {
-    document.getElementById('addButton_' + productId).style.display = 'none';
-    document.getElementById('quantityInput_' + productId).style.display = 'flex';
+    var quantityInput = document.getElementById('quantityInput_' + productId);
+    var addButton = document.getElementById('addButton_' + productId);
+    
+    // Hide the add button and show quantity input
+    addButton.classList.add('hidden');
+    quantityInput.classList.remove('hidden');
 }
 
 function hideQuantityInput(productId) {
-    document.getElementById('addButton_' + productId).style.display = 'block';
-    document.getElementById('quantityInput_' + productId).style.display = 'none';
+    var quantityInput = document.getElementById('quantityInput_' + productId);
+    var addButton = document.getElementById('addButton_' + productId);
+    
+    // Hide quantity input and show the add button
+    quantityInput.classList.add('hidden');
+    addButton.classList.remove('hidden');
 }
 
 function addToCart(productId, productName, productPrice, productImg) {

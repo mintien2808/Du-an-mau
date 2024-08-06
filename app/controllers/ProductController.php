@@ -5,11 +5,13 @@ class ProductController extends HomeController {
     private $productDAO;
     private $categoryTable = "categories";
     private $reviewDAO;
+    private $orderDao;
 
     public function __construct() {
         parent::__construct();
         $this->productDAO = $this->loadModel('ProductDAO');
         $this->reviewDAO = $this->loadModel('ReviewDAO'); 
+        $this->orderDao = $this->loadModel('OrderDao'); 
     }
 
     public function index() {
@@ -27,33 +29,34 @@ class ProductController extends HomeController {
     public function detail($id) {
         $product = $this->productDAO->getProductById($id);
         
-        // Lấy số trang từ tham số GET hoặc mặc định là 1
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         
-        // Số sản phẩm mỗi trang
         $productsPerPage = 5;
         
-        // Lấy sản phẩm liên quan với phân trang
         $relatedProducts = $this->productDAO->getRelatedProducts($product['id_category'], $id, $page, $productsPerPage);
-        
-        // Tính toán tổng số sản phẩm liên quan
+    
         $totalProducts = $this->productDAO->getTotalRelatedProducts($product['id_category'], $id);
         $totalPages = ceil($totalProducts / $productsPerPage);
         
         $categories = $this->productDAO->getAllCategories();
-        $reviews = $this->reviewDAO->getReviewsByProductId($id); 
-        
-        // Render view với các thông tin cần thiết
-        $this->view->render('products/detail'    , [
+        $reviews = $this->reviewDAO->getReviewsByProductId($id);
+        $userPurchased = false;
+        if (isset($_SESSION['user'])) {
+            $userPurchased = $this->orderDao->hasPurchasedProduct($_SESSION['user']['username'], $id);
+        }
+        $this->view->render('products/detail', [
             'product' => $product,
             'relatedProducts' => $relatedProducts,
             'categories' => $categories,
             'reviews' => $reviews,
             'totalPages' => $totalPages,
+            'userPurchased'=>$userPurchased,
             'page' => $page
         ]);
     }
     
+
+
     public function addReview(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
