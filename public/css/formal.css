@@ -11,18 +11,25 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #C5705D;
+
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    background-color: #D0B8A8;
+    border-radius: 5px;
+    padding-top : 5px;
+    padding-bottom : 5px;
 }
 
 header {
-    background-color: var(--primary-bg-color);
+    background-color: #77644b;
     color: var(--primary-color);
     padding: 15px 30px; 
+    border-radius: 5px;
 }
 
 nav {
@@ -53,14 +60,18 @@ nav {
 
 .nav-item a:hover {
     color: var(--hover-color);
-    background-color: rgba(255, 255, 255, 0.1); /* Thêm hiệu ứng màu nền khi di chuột vào */
-    transform: scale(1.05); /* Hiệu ứng phóng to nhẹ khi di chuột vào */
+    background-color: rgba(249, 2, 2, 0.1); 
+    transform: scale(1.05); 
+    border-radius: 5px;
 }
 
 .logo {
-    height: 50px; /* Tăng kích thước logo để dễ nhìn hơn */
+    width: 100px;
+    height: 100px; 
     margin-right: auto;
 }
+
+
 
 @media (max-width: 768px) {
     .nav-menu {
@@ -76,19 +87,59 @@ nav {
 
 .anh {
     margin: 20px 0;
-    display:block;
-    justify-content: center; 
-    align-items: center; 
+    display: flex; /* Đổi block thành flex */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Thêm overflow: hidden */
+    border-radius: 20px; /* Đặt border-radius ở đây để áp dụng cho cả video */
 }
 
-video {
-    max-width: 100%; 
-    height: auto; 
-    border-radius: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+.anh video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(226, 8, 8, 0.1);
 }
 
 
+
+.search-form {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    width: 300px;
+}
+
+.search-input::placeholder {
+    color: #201e1e;
+}
+
+.search-button {
+    padding: 10px;
+    border: none;
+    background-color: #29c6c1;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    font-size: 16px;
+    outline: none;
+}
+.no-products {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+}
+.search-button:hover {
+    background-color: #26a897;
+}
 
 .prd-container {
     margin: 20px auto; /* Canh giữa container */
@@ -227,16 +278,20 @@ video {
 
 
 footer {
-    background-color: #333; /* Màu nền tối cho footer */
+    background-color:  #77644b; 
     color: #fff;
     padding: 20px;
     text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border : 20px;
 }
 
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    
 }
 
 .footer-logo {
@@ -244,7 +299,7 @@ footer {
 }
 
 .footer-logo img {
-    max-width: 150px; /* Kích thước logo */
+    max-width: 150px;
 }
 
 .footer-icons {
@@ -659,7 +714,104 @@ a.button-like:focus {
     background-color: #0056b3;
 }
 
- /* PROFILE  NGUOI DUNG */
+ /* Cart */
+ .cart-items {
+    margin: 20px auto;
+    max-width: 1200px; /* Đặt chiều rộng tối đa cho giỏ hàng */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th, .cart-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.cart-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.cart-item-image {
+    max-width: 100px; /* Đặt kích thước tối đa cho hình ảnh sản phẩm */
+    height: auto;
+    border-radius: 5px;
+}
+
+.quantity-input {
+    width: 60px;
+    text-align: center;
+}
+
+.remove-btn {
+    color: #e74c3c;
+    text-decoration: none;
+}
+
+.remove-btn:hover {
+    text-decoration: underline;
+}
+
+.update-cart, .checkout-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.update-cart:hover, .checkout-btn:hover {
+    background-color: #0056b3;
+}
+
+ .empty-cart {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin: 20px auto; /* Canh giữa theo chiều ngang */
+    max-width: 100%; /* Giới hạn chiều rộng tối đa */
+}
+
+.empty-cart-img {
+    max-width: 500px; /* Đặt kích thước tối đa cho hình ảnh */
+    height: auto; /* Đảm bảo tỷ lệ khung hình của hình ảnh không bị thay đổi */
+    margin-bottom: 15px; /* Khoảng cách dưới hình ảnh */
+}
+
+.empty-cart p {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0 10px 10px;
+    padding-bottom: 20px;
+
+}
+
+.empty-cart .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.empty-cart .btn:hover {
+    background-color: #0056b3;
+}
 
 
 /* Container for the profile */

@@ -1,7 +1,8 @@
-<?php include_once('app/view/include/header.php');?>
 
-<div class="container">
-    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+<?php if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin') { ?>
+    <?php include_once('app/view/include/header.php');?>
+    <div class="container">
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
         <li class="nav-s">
             <a class="nav-link active" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="true">Người dùng</a>
         </li>
@@ -23,9 +24,9 @@
         <li class="nav-s">
             <a class="nav-link" id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="false">Thống kê</a>
         </li>
-    </ul>
+        </ul>
 
-    <div class="tab-content">
+        <div class="tab-content">
         <div class="tab-pane fade show active tab-content" id="users" role="tabpanel" aria-labelledby="users-tab">
             <h2 class="section-title">Danh sách Người dùng</h2>
             <table class="table">
@@ -158,6 +159,7 @@
                         <th class="table-header">ID</th>
                         <th class="table-header">ID người dùng</th>
                         <th class="table-header">Tổng Tiền</th>
+                        <th class="table-header">Ngày Tạo</th>
                         <th class="table-header">Hành động</th>
                     </tr>
                 </thead>
@@ -167,9 +169,35 @@
                         <td class="table-cell"><?php echo $order['id']; ?></td>
                         <td class="table-cell"><?php echo $order['user_id']; ?></td>
                         <td class="table-cell"><?php echo $order['total_amount']; ?></td>
+                        <td class="table-cell"><?php echo $order['order_date']; ?></td>
                         <td class="table-cell">
                             <a class="action-link" href="index.php?url=admin/DeleteOrder/<?php echo $order['id']; ?>" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');">Xóa</a>
                         </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <h2 class="section-title">Danh sách Chi Tiết</h2>
+            <table class="table">
+                <thead class="table-head">
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Hoá Đơn</th>
+                        <th class="table-header">Sản Phẩm</th>
+                        <th class="table-header">Người Nhận</th>
+                        <th class="table-header">Số lượng</th>
+                        <th class="table-header">Tổng Tiền Sản phẩm</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <?php foreach ($orderdetail as $order2): ?>
+                    <tr class="table-row">
+                        <td class="table-cell"><?php echo $order2['id']; ?></td>
+                        <td class="table-cell"><?php echo $order2['order_id']; ?></td>
+                        <td class="table-cell"><?php echo $order2['product_name']; ?></td>
+                        <td class="table-cell"><?php echo $order2['user_name']; ?></td>
+                        <td class="table-cell"><?php echo $order2['quantity']; ?></td>
+                        <td class="table-cell"><?php echo $order2['total_price']; ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -209,6 +237,7 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <a class="add-link" href="admin/addReview">Thêm đánh giá mới</a>
         </div>
 
         <div class="tab-pane fade tab-content" id="coupons" role="tabpanel" aria-labelledby="coupons-tab">
@@ -244,86 +273,94 @@
         <div class="tab-pane fade tab-content" id="stats" role="tabpanel" aria-labelledby="stats-tab">
             <h2 class="section-title">Thống kê số lượng Đơn hàng theo tháng</h2>
             <canvas id="orderChart" width="400" height="200"></canvas>
+            <canvas id="userChart" width="400" height="200"></canvas>
         </div>
 
+        </div>
     </div>
-</div>
 
-<script>
-    function showEditForm(userId) {
-        document.querySelectorAll('.admin-show').forEach(function(row) {
-            row.style.display = 'none';
-        });
-        document.querySelector('.edit-admin-show').style.display = '';
-        document.querySelector('.edit-row-' + userId).style.display = '';
-    }
+    <script>
+        function showEditForm(userId) {
+            document.querySelectorAll('.admin-show').forEach(function(row) {
+                row.style.display = 'none';
+            });
+            document.querySelector('.edit-admin-show').style.display = '';
+            document.querySelector('.edit-row-' + userId).style.display = '';
+        }
 
-    function hideEditForm(userId) {
-        document.querySelectorAll('.admin-show').forEach(function(row) {
-            row.style.display = '';
-        });
-        document.querySelector('.edit-admin-show').style.display = 'none';
-        document.querySelector('.edit-row-' + userId).style.display = 'none';
-    }
+        function hideEditForm(userId) {
+            document.querySelectorAll('.admin-show').forEach(function(row) {
+                row.style.display = '';
+            });
+            document.querySelector('.edit-admin-show').style.display = 'none';
+            document.querySelector('.edit-row-' + userId).style.display = 'none';
+        }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var tabs = document.querySelectorAll('.nav-link');
-        var contents = document.querySelectorAll('.tab-content');
+        document.addEventListener('DOMContentLoaded', function() {
+            var tabs = document.querySelectorAll('.nav-link');
+            var contents = document.querySelectorAll('.tab-content');
 
-        tabs.forEach(function(tab) {
-            tab.addEventListener('click', function(event) {
-                event.preventDefault();
-                var target = document.querySelector(tab.getAttribute('href'));
+            tabs.forEach(function(tab) {
+                tab.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var target = document.querySelector(tab.getAttribute('href'));
 
-                
-                tabs.forEach(function(t) { t.classList.remove('active'); });
-                contents.forEach(function(c) { c.classList.remove('show'); c.classList.remove('active'); });
+                    
+                    tabs.forEach(function(t) { t.classList.remove('active'); });
+                    contents.forEach(function(c) { c.classList.remove('show'); c.classList.remove('active'); });
 
-                
-                tab.classList.add('active');
-                target.classList.add('active');
-                target.classList.add('show');
+                    
+                    tab.classList.add('active');
+                    target.classList.add('active');
+                    target.classList.add('show');
+                });
             });
         });
-    });
-</script>
-<?php
-echo "<script>
-    var registrationData = {
-        labels: " . json_encode(array_column($orderDetails, 'order_date')) . ",
-        data: " . json_encode(array_column($orderDetails, 'quantity')) . ",
-        totalAmount: " . json_encode(array_column($orders, 'total_amount')) . "
-    };
-</script>";
-?>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('orderChart').getContext('2d');
-        var registrationChart = new Chart(ctx, {
-            type: 'line', 
-            data: {
-                labels: registrationData.labels,
-                datasets: [{
-                    label: 'Số người đăng ký',
-                    data: registrationData.data,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    });
-</script>
+    </script>
+    <?php
+        echo "<script>
+            var registrationData = {
+                labels: " . json_encode(array_column($orderDetails, 'order_date')) . ",
+                data: " . json_encode(array_column($orderDetails, 'quantity')) . ",
+                totalAmount: " . json_encode(array_column($orders, 'total_amount')) . "
+            };
 
+        </script>";
+    ?>
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('orderChart').getContext('2d');
+                var registrationChart = new Chart(ctx, {
+                    type: 'line', 
+                    data: {
+                        labels: registrationData.labels,
+                        datasets: [{
+                            label: 'Số lượng Đơn hàng',
+                            data: registrationData.data,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
 
 <?php include_once('app/view/include/footer.php');?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+    
+<?php
+} else {
+    header('location:404.html');
+}
+?>
+

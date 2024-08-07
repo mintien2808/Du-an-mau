@@ -15,7 +15,7 @@
     <header>
     <nav>
         <ul class="nav-menu">
-            <li class="nav-item logo-item"><a href="#"><img src="pic/logo.webp" alt="" class="logo"></a></li>
+            <li class="nav-item logo-item"><a href="home"><img src="public/img/logo.webp" alt="" class="logo"></a></li>
             <li class="nav-item home-item"><a href="home">Trang chủ</a></li>
             <li class="nav-item"><a href="index.php?url=cart/viewCart">Cart</a></li>
             <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {

@@ -396,6 +396,46 @@ class AdminController extends HomeController {
         $deleteUser = $this->ReviewDao-> deleteReview($id);
         header('Location: index.php?url=admin/index');
     }
+
+    public function addReview(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'];
+            $userId = $_POST['user_id'];
+            $productId = $_POST['product_id'];
+            $username = $_POST['username'];
+    
+            $errors = [];
+    
+            // Validate inputs
+            if (empty($rating) || $rating < 1 || $rating > 5) {
+                $errors['rating'] = "Điểm đánh giá phải từ 1 đến 5.";
+            }
+            if (empty($comment)) {
+                $errors['comment'] = "Bình luận không được để trống.";
+            }
+            if (empty($userId)) {
+                $errors['user_id'] = "ID người dùng không được để trống.";
+            }
+            if (empty($productId)) {
+                $errors['product_id'] = "ID sản phẩm không được để trống.";
+            }
+            if (empty($username)) {
+                $errors['username'] = "Tên không được để trống.";
+            }
+    
+            if (count($errors) === 0) {
+                
+                $this->ReviewDao->createReview($productId, $userId, $username, $comment, $rating);
+                $this->view->redirect('admin/index');
+                exit;
+            } else {
+                $this->view->render('admin/addReview', ['errors' => $errors]);
+            }
+        } else {
+            $this->view->render('admin/addReview');
+        }
+    }
     #Order 
 
     public function DeleteOrder($id){
@@ -403,6 +443,76 @@ class AdminController extends HomeController {
         header('Location: index.php?url=admin/index');
     }
 
+    #coupons
+
+    public function  DeleteCoupons($id) {
+            $this->DcodeDao->deleteDcode($id);
+            header('Location: index.php?url=admin/index');
+    }
+    
+    public function FixCouPons($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $code = trim($_POST['code']);
+                $amount = trim($_POST['amount']);
+                $expiryDate = trim($_POST['expiry_date']);
+                $errors = [];
+        
+                if (empty($code)) {
+                    $errors['code'] = 'Mã giảm giá không được để trống.';
+                }
+                if (empty($amount) || !is_numeric($amount) || $amount <= 0) {
+                    $errors['amount'] = 'Số tiền giảm phải là một số dương.';
+                }
+                if (empty($expiryDate)) {
+                    $errors['expiry_date'] = 'Ngày hết hạn không được để trống.';
+                } 
+
+                if (empty($errors)) {
+                    $this->DcodeDao->Update($id, $code, $amount, $expiryDate);
+                    header('Location: index.php?url=admin/index');
+                    exit;
+                }else{
+                    $this->view->render('admin/updateCoupons', ['errors' => $errors, 'id' => $id, 'code' => $code, 'amount' => $amount, 'expiryDate' => $expiryDate]);
+                }
+        } 
+            $this->view->render('admin/updateCoupons');
+    }
+    
+
+    public function addcoupons() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $code = trim($_POST['code']);
+            $amount = trim($_POST['amount']);
+            $expiryDate = trim($_POST['expiry_date']);
+            $errors = [];
+
+            if (empty($code)) {
+                $errors['code'] = 'Mã giảm giá không được để trống.';
+            }
+            if (empty($amount) || !is_numeric($amount) || $amount <= 0) {
+                $errors['amount'] = 'Số tiền giảm phải là một số dương.';
+            }
+            if (empty($expiryDate)) {
+                $errors['expiry_date'] = 'Ngày hết hạn không được để trống.';
+            } else {
+                $currentDate = new DateTime();
+                $expiryDateObj = new DateTime($expiryDate);
+                $minimumDate = $currentDate->add(new DateInterval('P2M')); 
+                
+                if ($expiryDateObj <= $minimumDate) {
+                    $errors['expiry_date'] = 'Ngày hết hạn phải lớn hơn ít nhất 2 tháng từ ngày hiện tại.';
+                }
+            }
+            if (empty($errors)) {
+                $this->DcodeDao->addDiscountCode($code, $amount, $expiryDate);
+                $this->view->redirect('admin/index');
+            }else{
+            $this->view->render('admin/addCoupons', ['errors' => $errors]);
+            }
+        } 
+            $this->view->render('admin/addCoupons');
+    }
+    
 
 
 }

@@ -42,7 +42,7 @@
                 <?php if (isset($errors['category'])) echo "<p style='color:red;'>{$errors['category']}</p>"; ?>
             </div>
             <div class="sign-up__buttons">
-                <a class="btn btn--register" href="index.php?url=admin/products">Quay Lại</a>
+            <a class="btn btn--register" href="../index.php?url=admin">Quay Lại</a>
                 <button class="btn btn--signin" type="submit">Cập Nhật Sản Phẩm</button>
             </div>
         </form>

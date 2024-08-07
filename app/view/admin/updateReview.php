@@ -25,7 +25,7 @@
                 <?php if (isset($errors['comment'])) echo "<p style='color:red;'>{$errors['comment']}</p>"; ?>
             </div>
             <div class="sign-up__buttons">
-                <a class="btn btn--register" href="admin">Quay Lại</a>
+            <a class="btn btn--register" href="../index.php?url=admin">Quay Lại</a>
                 <button class="btn btn--signin" type="submit">Thêm Đánh Giá</button>
             </div>
         </form>

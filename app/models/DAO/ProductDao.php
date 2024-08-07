@@ -105,6 +105,15 @@ class ProductDAO {
         ]);
     }
 
+    public function searchProducts($searchTerm) {
+        $database = new Database();
+        $db = $database->getConnection();
+        $sql = "SELECT * FROM product WHERE name LIKE ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute(['%' . $searchTerm . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     // CATEGORIES
     
     public function getAllCategories() {

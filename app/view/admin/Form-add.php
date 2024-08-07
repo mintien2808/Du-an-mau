@@ -44,7 +44,7 @@
                 ?>
             </div>
             <div class="sign-up__buttons">
-                <a class="btn btn--register" href="admin">Quay Lại</a>
+            <a class="btn btn--register" href="../index.php?url=admin">Quay Lại</a>
                 <button class="btn btn--signin" type="submit">Thêm Người Dùng</button>
             </div>
         </form>

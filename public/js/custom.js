@@ -75,3 +75,4 @@ function drawVisor() {
   
   drawVisor();
   animate();
+  

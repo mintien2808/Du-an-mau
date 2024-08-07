@@ -1,15 +1,14 @@
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
-            <a href="#"><img src="pic/logo.webp" alt="Logo"></a>
+            <a href="home"><img src="pic/logo.webp" alt="logo"></a>
         </div>
-
         <div class="footer-icons">
             <ul>
-                <li><a href="#"><img src="pic/tai1.png" alt="Icon 1"></a></li>
-                <li><a href="#"><img src="pic/tai2.png" alt="Icon 2"></a></li>
-                <li><a href="#"><img src="pic/tai3.png" alt="Icon 3"></a></li>
-                <li><a href="#"><img src="pic/tai4.png" alt="Icon 4"></a></li>
+                <li><a href="#"><img src="public/img/ins.png" alt="Icon 1"></a></li>
+                <li><a href="#"><img src="public/img/face.webp" alt="Icon 2"></a></li>
+                <li><a href="#"><img src="public/img/X.png" alt="Icon 3"></a></li>
+                <li><a href="#"><img src="public/img/tele.webp" alt="Icon 4"></a></li>
             </ul>
         </div>
 

@@ -26,6 +26,22 @@ class ProductController extends HomeController {
         $this->view->render('home', ['products' => $products, 'categories' => $categories]);
     }
 
+    public function search() {
+        $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : ''; 
+        if (!empty($searchTerm)) {
+            $products = $this->productDAO->searchProducts($searchTerm);
+        } else {
+            $products = [];
+        }
+        $categories = $this->productDAO->getAllCategories();
+        $this->view->render('home', [
+            'products' => $products, 
+            'categories' => $categories, 
+            'searchTerm' => $searchTerm
+        ]);
+    }
+    
+
     public function detail($id) {
         $product = $this->productDAO->getProductById($id);
         
@@ -55,8 +71,6 @@ class ProductController extends HomeController {
         ]);
     }
     
-
-
     public function addReview(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $productId = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
