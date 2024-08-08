@@ -57,7 +57,7 @@ if (!empty($cart)) {
                     <a href="index.php?url=order/checkout"><button class="checkout-btn">Thanh Toán</button></a>
                 <?php else: ?>
                     <div class="empty-cart">
-                        <img src="public/img/no-cart.png" alt="Nocart" class='empty-cart-img'>
+                        <img src="public/img/cartempty.jpg" alt="Nocart" class='empty-cart-img'>
                         <p>Giỏ hàng của bạn đang trống.</p>
                         <p>Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm.</p>
                         <a href="home" class="btn btn-primary">Xem Sản Phẩm</a>

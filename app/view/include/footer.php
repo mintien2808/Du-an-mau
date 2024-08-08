@@ -1,14 +1,14 @@
 <footer>
     <div class="footer-container">
         <div class="footer-logo">
-            <a href="home"><img src="pic/logo.webp" alt="logo"></a>
+            <a href="home"><img src="public/img/logo.webp" alt="logo"></a>
         </div>
         <div class="footer-icons">
             <ul>
                 <li><a href="#"><img src="public/img/ins.png" alt="Icon 1"></a></li>
                 <li><a href="#"><img src="public/img/face.webp" alt="Icon 2"></a></li>
                 <li><a href="#"><img src="public/img/X.png" alt="Icon 3"></a></li>
-                <li><a href="#"><img src="public/img/tele.webp" alt="Icon 4"></a></li>
+                <li><a href="#"><img src="public/img/tele.png" alt="Icon 4"></a></li>
             </ul>
         </div>
 
@@ -44,8 +44,6 @@
         </div>
     </div>
 </footer>
-
-
 </body>
 
 </html>

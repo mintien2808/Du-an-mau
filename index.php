@@ -21,10 +21,10 @@ if (file_exists('app/controllers/' . $controllerName . '.php')) {
     if (method_exists($controller, $method)) {
         call_user_func_array([$controller, $method], $params);
     } else {
-        echo ' deo ton tai cai method nay ' .$method;   
+       header('location:404.html');
     }
 } else {    
-   echo 'deo ton tai cai controller nay ' . $controllerName;
+    header('location:404.html');
 }
 
 ?>

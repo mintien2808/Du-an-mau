@@ -21,7 +21,6 @@
             <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
                 echo '<li class="nav-item"><a href="admin">Admin</a></li>';
             } ?>
-            <li class="nav-item"><a href="introduce">About Us</a></li>
             <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])) {
                 echo '<li class="nav-item"><a href="user/login">Đăng Nhập</a></li>';
             } else {

@@ -19,7 +19,6 @@
                 <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
                     echo '<li class="nav-item"><a href="admin">Admin</a></li>';
                 } ?>
-                <li class="nav-item"><a href="introduce">About Us</a></li>
                 <?php if(!isset($_SESSION['user']) && empty($_SESSION['user'])) {
                     echo '<li class="nav-item"><a href="user/login">Đăng Nhập</a></li>';
                 } else {
@@ -97,7 +96,7 @@
                 <li><a href="#"><img src="public/img/ins.png" alt="Icon 1"></a></li>
                 <li><a href="#"><img src="public/img/face.webp" alt="Icon 2"></a></li>
                 <li><a href="#"><img src="public/img/X.png" alt="Icon 3"></a></li>
-                <li><a href="#"><img src="public/img/tele.webp" alt="Icon 4"></a></li>
+                <li><a href="#"><img src="public/img/tele.png" alt="Icon 4"></a></li>
             </ul>
         </div>
 
